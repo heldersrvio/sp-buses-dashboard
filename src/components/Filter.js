@@ -42,7 +42,7 @@ const Filter = (props) => {
 			>
 				<li className={'filter-option'}>
 					<label
-						for="filter-vehicle"
+						htmlFor="filter-vehicle"
 						className={showVehicles ? 'active' : 'inactive'}
 					>
 						Exibir veículos
@@ -50,12 +50,12 @@ const Filter = (props) => {
 					<input
 						type="checkbox"
 						checked={showVehicles}
-						onClick={() => toggleFilter(showVehicles, setShowVehicles)}
+						onChange={() => toggleFilter(showVehicles, setShowVehicles)}
 					></input>
 				</li>
 				<li className={'filter-option'}>
 					<label
-						for="filter-line"
+						htmlFor="filter-line"
 						className={showLines ? 'active' : 'inactive'}
 					>
 						Exibir linhas
@@ -63,12 +63,12 @@ const Filter = (props) => {
 					<input
 						type="checkbox"
 						checked={showLines}
-						onClick={() => toggleFilter(showLines, setShowLines)}
+						onChange={() => toggleFilter(showLines, setShowLines)}
 					></input>
 				</li>
 				<li className={'filter-option'}>
 					<label
-						for="filter-stop"
+						htmlFor="filter-stop"
 						className={showStops ? 'active' : 'inactive'}
 					>
 						Exibir paradas
@@ -76,7 +76,7 @@ const Filter = (props) => {
 					<input
 						type="checkbox"
 						checked={showStops}
-						onClick={() => toggleFilter(showStops, setShowStops)}
+						onChange={() => toggleFilter(showStops, setShowStops)}
 					></input>
 				</li>
 			</ul>
