@@ -24,7 +24,7 @@ const SearchBar = (props) => {
 
 	const searchResultsCards = lookUpInfo.map((result) => {
 		return (
-			<div className="search-result-card">
+			<div className="search-result-card" onClick={() => props.updateMap(result.title)}>
 				<div className="search-results-card-left-section">
 					<img className="search-result-icon" src="/" alt="Vehicle" />
 				</div>
