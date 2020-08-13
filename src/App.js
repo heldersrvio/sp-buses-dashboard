@@ -11,7 +11,7 @@ const App = () => {
   useEffect(() => {
     const authenticate = async () => {
       try {
-        const response = await fetch(`https://cors-anywhere.herokuapp.com/http://api.olhovivo.sptrans.com.br/v2.1/Login/Autenticar?token=${process.env.REACT_APP_SPTRANS_API_KEY}`, {
+        const response = await fetch(process.env.REACT_APP_BASE_URL + `Login/Autenticar?token=${process.env.REACT_APP_SPTRANS_API_KEY}`, {
           method: 'POST',
           mode: 'cors',
         });
@@ -36,29 +36,28 @@ const App = () => {
     }
   });
 
-  const addNewVehicle = (vehicle) => {
-    setVehicles(() => vehicles + vehicle);
-  };
-
   const fetchVehiclesInformation = async () => {
     try {
-      const response = await fetch(`https://cors-anywhere.herokuapp.com/http://api.olhovivo.sptrans.com.br/v2.1/Posicao`, {
-        method: 'GET',
-        mode: 'cors',
-      });
-      const responseData = await response.json()
-      console.log(responseData);
-      response.l.forEach((line) => {
-        line.vs.forEach((vehicle) => {
-          addNewVehicle({
-            prefix: vehicle.p,
-            accessibility: vehicle.a,
-            latitude: vehicle.py,
-            longitude: vehicle.px,
-            lineCode: line.cl,
+      if (vehicles.length === 0) {
+        const response = await fetch(process.env.REACT_APP_BASE_URL + 'Posicao', {
+          method: 'GET',
+          mode: 'cors',
+        });
+        const responseData = await response.json();
+        let currentVehicles = [];
+        responseData.l.forEach((line) => {
+          line.vs.forEach((vehicle) => {
+            currentVehicles.push({
+              prefix: vehicle.p,
+              accessibility: vehicle.a,
+              latitude: vehicle.py,
+              longitude: vehicle.px,
+              lineCode: line.cl,
+            });
           });
         });
-      });
+        setVehicles(currentVehicles);
+      }
     } catch (error) {
       console.log('Problem fetching vehicles information');
     }

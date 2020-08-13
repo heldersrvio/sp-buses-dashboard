@@ -9,7 +9,7 @@ const Map = (props) => {
     useEffect(() => {
         if (map !== null && map.current !== undefined) {
             if (map.current._container === undefined) {
-                map.current = L.map('mapid').setView([-23.5502, -46.631], 13);
+                map.current = L.map('mapid').setView([-23.542271, -46.636823], 17);
             }
             L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
                 attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -50,7 +50,6 @@ const Map = (props) => {
             circle.bindPopup("I am a circle.");
             polygon.bindPopup("I am a polygon.");
             */
-
             props.vehicles.forEach((vehicle) => {
                 const vehicleMarker = L.marker([vehicle.latitude, vehicle.longitude]).addTo(map.current);
                 vehicleMarker.bindPopup(`<b>Ônibus ${vehicle.prefix}</b><br>Linha ${vehicle.lineCode}<br>${vehicle.accessibility ? 'Acessível para pessoas com deficiência' : 'Não acessível para pessoas com deficiência'}`)
@@ -66,7 +65,7 @@ const Map = (props) => {
             
             map.current.on('click', onMapClick);
         }
-    });
+    }, [props.vehicles]);
 
 
     return (
