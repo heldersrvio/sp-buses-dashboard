@@ -3,6 +3,15 @@ import PropTypes from 'prop-types';
 
 const LanesBox = (props) => {
 	const [visibleStops, setVisibleStops] = useState([]);
+	const [stopsForLanes, setStopsForLanes] = useState({});
+
+	const updateStops = (laneCode, stops) => {
+		setStopsForLanes((sFL) => {
+			const newObj = { ...sFL };
+			newObj[laneCode] = stops;
+			return newObj;
+		});
+	};
 
 	const laneList = props.lanes.map((lane) => {
 		return (
@@ -11,7 +20,18 @@ const LanesBox = (props) => {
 					{lane.laneName}{' '}
 					<button
 						className="show-stops"
-						onClick={() => setVisibleStops(visibleStops.concat(lane.laneCode))}
+						onClick={() =>
+							setVisibleStops((vS) => {
+								if (vS.includes(lane.laneCode)) {
+									return vS.filter((c) => c !== lane.laneCode);
+								} else {
+									if (stopsForLanes[lane.laneCode] === undefined) {
+										props.fetchStopsForLane(lane.laneCode, updateStops);
+									}
+									return vS.concat(lane.laneCode);
+								}
+							})
+						}
 					>
 						{visibleStops.includes(lane.laneCode)
 							? 'Ocultar paradas ▼'
@@ -25,11 +45,16 @@ const LanesBox = (props) => {
 							: 'lane-stops-ul'
 					}
 				>
-					{lane.laneStops.map((stop) => (
-						<li onClick={props.updateMap(stop.stopCode)} key={stop.stopCode}>
-							{stop.stopName}
-						</li>
-					))}
+					{stopsForLanes[lane.laneCode] !== undefined
+						? stopsForLanes[lane.laneCode].map((stop) => (
+								<li
+									onClick={props.updateMap(stop.stopCode)}
+									key={stop.stopCode}
+								>
+									{stop.stopName}
+								</li>
+						  ))
+						: null}
 				</ul>
 			</li>
 		);
@@ -48,15 +73,10 @@ LanesBox.propTypes = {
 		PropTypes.exact({
 			laneCode: PropTypes.number,
 			laneName: PropTypes.string,
-			laneStops: PropTypes.arrayOf(
-				PropTypes.exact({
-					stopCode: PropTypes.number,
-					stopName: PropTypes.string,
-				})
-			),
 		})
 	),
 	updateMap: PropTypes.func,
+	fetchStopsForLane: PropTypes.func,
 };
 
 export default LanesBox;
