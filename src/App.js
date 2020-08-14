@@ -1,122 +1,61 @@
-import React, { useEffect, useState } from 'react';
-import Header from './components/Header';
+import React, { useEffect, useState, useRef } from 'react';
+import OlhoVivo from './OlhoVivo';
 import Footer from './components/Footer';
+import LanesBox from './components/LanesBox';
 import Map from './components/Map';
 
 const App = () => {
-	const [isAuthenticated, setIsAuthenticated] = useState(false);
 	const [vehicles, setVehicles] = useState([]);
-	const [lines, setLines] = useState([]);
 	const [stops, setStops] = useState([]);
+	const [lines, setLines] = useState([]);
+	const [lanes, setLanes] = useState([]);
+
+	const olhoVivo = useRef(null);
 
 	useEffect(() => {
-		const authenticate = async () => {
-			try {
-				const response = await fetch(
-					process.env.REACT_APP_BASE_URL +
-						`Login/Autenticar?token=${process.env.REACT_APP_SPTRANS_API_KEY}`,
-					{
-						method: 'POST',
-						mode: 'cors',
-					}
+		const addNewLineGroup = (lineGroup) => {
+			setLines(() => lines.concat(lineGroup));
+		};
+		const addNewStopGroup = (stopGroup) => {
+			setStops(() => stops.concat(stopGroup));
+		};
+		const addNewVehicleGroup = (vehicleGroup) => {
+			setVehicles(() => vehicles.concat(vehicleGroup));
+		};
+		const addNewLaneGroup = (laneGroup) => {
+			setLanes(() => lanes.concat(laneGroup));
+		};
+
+		olhoVivo.current = OlhoVivo();
+
+		const update = () => {
+			if (olhoVivo.current.authenticate) {
+				olhoVivo.current.fetchVehiclesAndLinesInformation(
+					addNewLineGroup,
+					addNewVehicleGroup
 				);
-				const responseData = await response.json();
-				console.log(responseData);
-				setIsAuthenticated(responseData);
-			} catch (error) {
-				console.log('Problem authenticating');
-				return false;
+				olhoVivo.current.fetchStopsInformation(addNewStopGroup);
+				olhoVivo.current.fetchLanesInformation(addNewLaneGroup);
 			}
 		};
-		if (!isAuthenticated) {
-			authenticate();
-		}
-	});
 
-	useEffect(() => {
-		if (isAuthenticated) {
-			fetchVehiclesAndLinesInformation();
-			fetchStopsInformation();
-		}
-	});
+		const interval = setInterval(() => {
+			update();
+		}, 300000);
 
-	const fetchVehiclesAndLinesInformation = async () => {
-		try {
-			if (vehicles.length === 0) {
-				const response = await fetch(
-					process.env.REACT_APP_BASE_URL + 'Posicao',
-					{
-						method: 'GET',
-						mode: 'cors',
-					}
-				);
-				const responseData = await response.json();
-				let currentVehicles = [];
-				let currentLines = [];
-				responseData.l.forEach((line) => {
-					currentLines.push({
-						lineCode: line.cl,
-						circular: line.lc,
-						sign1: line.lt,
-						sign2: line.tl,
-						orientation: line.sl,
-						descriptionSignMain: line.tp,
-						descriptionSignSecondary: line.ts,
-					});
-					line.vs.forEach((vehicle) => {
-						currentVehicles.push({
-							prefix: vehicle.p,
-							accessibility: vehicle.a,
-							latitude: vehicle.py,
-							longitude: vehicle.px,
-							lineCode: line.cl,
-						});
-					});
-				});
-				setLines(currentLines);
-				setVehicles(currentVehicles);
-			}
-		} catch (error) {
-			console.log('Problem fetching vehicles and lines information');
-		}
-	};
+		update();
 
-	const fetchStopsInformation = async () => {
-		try {
-			if (stops.length === 0) {
-				const response = await fetch(
-					process.env.REACT_APP_BASE_URL + 'Parada/Buscar?termosBusca=',
-					{
-						method: 'GET',
-						mode: 'cors',
-					}
-				);
-				const responseData = await response.json();
-				let currentStops = [];
-				responseData.forEach((stop) => {
-					currentStops.push({
-						stopCode: stop.cp,
-						stopName: stop.np,
-						stopAddress: stop.ed,
-						latitude: stop.py,
-						longitude: stop.px,
-					});
-				});
-				setStops(currentStops);
-			}
-		} catch (error) {
-			console.log('Problem fetching stops information');
-		}
-	};
+		return () => {
+			clearInterval(interval);
+		};
+	}, []);
 
 	return (
 		<div className="App">
-			<Header
-				updateMap={() => {}}
-				queryInformation={() => {}}
-				filterMap={() => {}}
-			/>
-			<Map vehicles={vehicles} lines={lines} stops={stops} />
+			<div id="left-section">
+				<LanesBox updateMap={() => {}} lanes={lanes} />
+			</div>
+			<Map vehicles={vehicles} stops={stops} />
 			<Footer />
 		</div>
 	);

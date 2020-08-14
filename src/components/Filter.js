@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 const Filter = (props) => {
 	const [showVehicles, setShowVehicles] = useState(true);
-	const [showLines, setShowLines] = useState(true);
 	const [showStops, setShowStops] = useState(true);
 	const [buttonClicked, setButtonClicked] = useState(false);
 	const filterRef = useRef(null);
@@ -24,7 +23,6 @@ const Filter = (props) => {
 		setFilter(!filter);
 		props.filterMap({
 			showVehicles,
-			showLines,
 			showStops,
 		});
 	};
@@ -51,19 +49,6 @@ const Filter = (props) => {
 						type="checkbox"
 						checked={showVehicles}
 						onChange={() => toggleFilter(showVehicles, setShowVehicles)}
-					></input>
-				</li>
-				<li className={'filter-option'}>
-					<label
-						htmlFor="filter-line"
-						className={showLines ? 'active' : 'inactive'}
-					>
-						Exibir linhas
-					</label>
-					<input
-						type="checkbox"
-						checked={showLines}
-						onChange={() => toggleFilter(showLines, setShowLines)}
 					></input>
 				</li>
 				<li className={'filter-option'}>

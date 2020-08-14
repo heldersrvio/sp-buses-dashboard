@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import MapSearchBar from './MapSearchBar';
 import PropTypes from 'prop-types';
 import L from 'leaflet';
 
@@ -53,19 +54,21 @@ const Map = (props) => {
             circle.bindPopup("I am a circle.");
             polygon.bindPopup("I am a polygon.");
             */
-			props.vehicles.forEach((vehicle) => {
-				const vehicleMarker = L.marker([
-					vehicle.latitude,
-					vehicle.longitude,
-				]).addTo(map.current);
-				vehicleMarker.bindPopup(
-					`<b>Ônibus ${vehicle.prefix}</b><br>Linha ${vehicle.lineCode}<br>${
-						vehicle.accessibility
-							? 'Acessível para pessoas com deficiência'
-							: 'Não acessível para pessoas com deficiência'
-					}`
-				);
-			});
+			setTimeout(() => {
+				props.vehicles.forEach((vehicle) => {
+					const vehicleMarker = L.marker([
+						vehicle.latitude,
+						vehicle.longitude,
+					]).addTo(map.current);
+					vehicleMarker.bindPopup(
+						`<b>Ônibus ${vehicle.prefix}</b><br>Linha ${vehicle.lineCode}<br>${
+							vehicle.accessibility
+								? 'Acessível para pessoas com deficiência'
+								: 'Não acessível para pessoas com deficiência'
+						}`
+					);
+				});
+			}, 50);
 
 			let popup = L.popup();
 			let onMapClick = (e) => {
@@ -80,7 +83,18 @@ const Map = (props) => {
 	}, [props.vehicles]);
 
 	return (
-		<div id="mapid" ref={map} style={{ height: '400px', width: '600px' }}></div>
+		<div id="map-container">
+			<MapSearchBar
+				updateMap={() => {}}
+				queryInformation={() => {}}
+				filterMap={() => {}}
+			/>
+			<div
+				id="mapid"
+				ref={map}
+				style={{ height: '400px', width: '600px' }}
+			></div>
+		</div>
 	);
 };
 
@@ -94,7 +108,7 @@ Map.propTypes = {
 			lineCode: PropTypes.number,
 		})
 	),
-	lines: PropTypes.arrayOf(
+	/*lines: PropTypes.arrayOf(
 		PropTypes.exact({
 			lineCode: PropTypes.number,
 			circular: PropTypes.bool,
@@ -104,7 +118,7 @@ Map.propTypes = {
 			descriptionSignMain: PropTypes.string,
 			descriptionSignSecondary: PropTypes.string,
 		})
-	),
+	),*/
 	stops: PropTypes.arrayOf(
 		PropTypes.exact({
 			stopCode: PropTypes.number,

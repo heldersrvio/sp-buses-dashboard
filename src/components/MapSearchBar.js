@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import Filter from './Filter';
 import SearchBar from './SearchBar';
 
-const Header = (props) => {
+const MapSearchBar = (props) => {
 	return (
-		<div id="header">
+		<div id="map-search-bar">
 			<h1>Ônibus São Paulo</h1>
 			<div id="bar">
 				<SearchBar
@@ -18,10 +18,10 @@ const Header = (props) => {
 	);
 };
 
-Header.propTypes = {
+MapSearchBar.propTypes = {
 	updateMap: PropTypes.func,
 	queryInformation: PropTypes.func,
 	filterMap: PropTypes.func,
 };
 
-export default Header;
+export default MapSearchBar;
