@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import MapSearchBar from './MapSearchBar';
+import SearchBar from './SearchBar';
 import PropTypes from 'prop-types';
 import L from 'leaflet';
 
@@ -7,6 +7,26 @@ const Map = (props) => {
 	const map = useRef(null);
 
 	useEffect(() => {
+		const addVehiclesToMap = () => {
+			for (let i = 0; i < props.vehicles.length; i++) {
+				setTimeout(() => {
+					const vehicleMarker = L.marker([
+						props.vehicles[i].latitude,
+						props.vehicles[i].longitude,
+					]).addTo(map.current);
+					vehicleMarker.bindPopup(
+						`<b>Ônibus ${props.vehicles[i].prefix}</b><br>Linha ${
+							props.vehicles[i].lineCode
+						}<br>${
+							props.vehicles[i].accessibility
+								? 'Acessível para pessoas com deficiência'
+								: 'Não acessível para pessoas com deficiência'
+						}`
+					);
+				}, 0);
+			}
+		};
+
 		if (map !== null && map.current !== undefined) {
 			if (map.current._container === undefined) {
 				map.current = L.map('mapid').setView([-23.542271, -46.636823], 17);
@@ -54,21 +74,7 @@ const Map = (props) => {
             circle.bindPopup("I am a circle.");
             polygon.bindPopup("I am a polygon.");
             */
-			setTimeout(() => {
-				props.vehicles.forEach((vehicle) => {
-					const vehicleMarker = L.marker([
-						vehicle.latitude,
-						vehicle.longitude,
-					]).addTo(map.current);
-					vehicleMarker.bindPopup(
-						`<b>Ônibus ${vehicle.prefix}</b><br>Linha ${vehicle.lineCode}<br>${
-							vehicle.accessibility
-								? 'Acessível para pessoas com deficiência'
-								: 'Não acessível para pessoas com deficiência'
-						}`
-					);
-				});
-			}, 50);
+			addVehiclesToMap();
 
 			let popup = L.popup();
 			let onMapClick = (e) => {
@@ -84,11 +90,7 @@ const Map = (props) => {
 
 	return (
 		<div id="map-container">
-			<MapSearchBar
-				updateMap={() => {}}
-				queryInformation={() => {}}
-				filterMap={() => {}}
-			/>
+			<SearchBar updateMap={() => {}} queryInformation={() => {}} />
 			<div
 				id="mapid"
 				ref={map}

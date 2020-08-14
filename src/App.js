@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import OlhoVivo from './OlhoVivo';
+import Header from './components/Header';
 import Footer from './components/Footer';
 import LanesBox from './components/LanesBox';
 import LinesBox from './components/LinesBox';
@@ -10,6 +11,14 @@ const App = () => {
 	const [stops, setStops] = useState([]);
 	const [lanes, setLanes] = useState([]);
 
+	const makeAsync = (func) => {
+		return (value) => {
+			setTimeout(() => {
+				func(value);
+			}, 50);
+		};
+	};
+
 	const olhoVivo = useRef(null);
 
 	useEffect(() => {
@@ -17,9 +26,9 @@ const App = () => {
 
 		const update = () => {
 			if (olhoVivo.current.authenticate) {
-				olhoVivo.current.fetchVehiclesInformation(setVehicles);
-				olhoVivo.current.fetchStopsInformation(setStops);
-				olhoVivo.current.fetchLanesInformation(setLanes);
+				olhoVivo.current.fetchVehiclesInformation(makeAsync(setVehicles));
+				olhoVivo.current.fetchStopsInformation(makeAsync(setStops));
+				olhoVivo.current.fetchLanesInformation(makeAsync(setLanes));
 			}
 		};
 
@@ -36,25 +45,32 @@ const App = () => {
 
 	return (
 		<div className="App">
-			<div id="left-section">
-				<LinesBox
-					fetchLinesInformation={
-						olhoVivo.current !== null
-							? olhoVivo.current.fetchLinesInformation
-							: () => {}
-					}
-				/>
-				<LanesBox
-					updateMap={() => {}}
-					lanes={lanes}
-					fetchStopsForLane={
-						olhoVivo.current !== null
-							? olhoVivo.current.fetchStopsForLane
-							: () => {}
-					}
-				/>
+			<div id="header-container">
+				<Header filterMap={() => {}} />
 			</div>
-			<Map vehicles={vehicles} stops={stops} />
+			<div id="dashboard">
+				<div id="left-section">
+					<LinesBox
+						fetchLinesInformation={
+							olhoVivo.current !== null
+								? olhoVivo.current.fetchLinesInformation
+								: () => {}
+						}
+					/>
+					<LanesBox
+						updateMap={() => {}}
+						lanes={lanes}
+						fetchStopsForLane={
+							olhoVivo.current !== null
+								? olhoVivo.current.fetchStopsForLane
+								: () => {}
+						}
+					/>
+				</div>
+				<div id="right-section">
+					<Map vehicles={vehicles} stops={stops} />
+				</div>
+			</div>
 			<Footer />
 		</div>
 	);
