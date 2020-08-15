@@ -10,14 +10,56 @@ const App = () => {
 	const [vehicles, setVehicles] = useState([]);
 	const [stops, setStops] = useState([]);
 	const [lanes, setLanes] = useState([]);
+	const [loading, setLoading] = useState(false);
+	const [lastUpdate, setLastUpdate] = useState(new Date());
+	const [currentTime, setCurrentTime] = useState(new Date());
 
 	const olhoVivo = useRef(null);
+
+	const finishUpdate = () => {
+		if (loading) {
+			setLoading(false);
+			setLastUpdate(new Date());
+		}
+	};
+
+	const stringifyUpdateInterval = () => {
+		console.log(currentTime);
+		console.log(lastUpdate);
+		switch (
+			Math.floor((currentTime.getTime() - lastUpdate.getTime()) / 60000)
+		) {
+			case 0:
+				return 'menos de 1 minuto';
+			case 1:
+				return '1 minuto';
+			case 2:
+				return '2 minutos';
+			case 3:
+				return '3 minutos';
+			case 4:
+				return '4 minutos';
+			default:
+				return '5 minutos';
+		}
+	};
+
+	useEffect(() => {
+		const interval = setInterval(() => {
+			setCurrentTime(new Date());
+		}, 1000);
+
+		return () => {
+			clearInterval(interval);
+		};
+	}, []);
 
 	useEffect(() => {
 		olhoVivo.current = OlhoVivo();
 
 		const update = () => {
 			if (olhoVivo.current.authenticate) {
+				setLoading(true);
 				olhoVivo.current.fetchVehiclesInformation(setVehicles);
 				olhoVivo.current.fetchStopsInformation(setStops);
 				olhoVivo.current.fetchLanesInformation(setLanes);
@@ -60,10 +102,10 @@ const App = () => {
 					/>
 				</div>
 				<div id="right-section">
-					<Map vehicles={vehicles} stops={stops} />
+					<Map vehicles={vehicles} stops={stops} finishLoading={finishUpdate} />
 				</div>
 			</div>
-			<Footer />
+			<Footer loading={loading} lastUpdateTime={stringifyUpdateInterval()} />
 		</div>
 	);
 };

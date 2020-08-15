@@ -14,7 +14,7 @@ const SearchBar = (props) => {
 	};
 
 	const loadingSpinner = (
-		<div class="loading-spinner">
+		<div className="loading-spinner">
 			<div></div>
 			<div></div>
 			<div></div>

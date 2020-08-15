@@ -23,6 +23,9 @@ const Map = (props) => {
 								: 'Não acessível para pessoas com deficiência'
 						}`
 					);
+					if (i === props.vehicles.length - 1) {
+						props.finishLoading();
+					}
 				}, 0);
 			}
 		};
@@ -102,7 +105,7 @@ const Map = (props) => {
 
 			map.current.on('click', onMapClick);
 		}
-	}, [props.vehicles, props.stops]);
+	}, [props]);
 
 	return (
 		<div id="map-container">
@@ -135,6 +138,7 @@ Map.propTypes = {
 			longitude: PropTypes.number,
 		})
 	),
+	finishLoading: PropTypes.func,
 };
 
 export default Map;
