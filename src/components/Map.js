@@ -27,6 +27,21 @@ const Map = (props) => {
 			}
 		};
 
+		const addStopsToMap = () => {
+			for (let i = 0; i < props.stops.length; i++) {
+				setTimeout(() => {
+					const stopMarker = L.marker([
+						props.stops[i].latitude,
+						props.stops[i].longitude,
+					]).addTo(map.current);
+					stopMarker.setOpacity(0.5);
+					stopMarker.bindPopup(
+						`<b>Parada ${props.stops[i].stopName}</b><br>Endereço: ${props.stops[i].stopAddress}`
+					);
+				}, 0);
+			}
+		};
+
 		if (map !== null && map.current !== undefined) {
 			if (map.current._container === undefined) {
 				map.current = L.map('mapid').setView([-23.542271, -46.636823], 17);
@@ -75,6 +90,7 @@ const Map = (props) => {
             polygon.bindPopup("I am a polygon.");
             */
 			addVehiclesToMap();
+			addStopsToMap();
 
 			let popup = L.popup();
 			let onMapClick = (e) => {
@@ -86,7 +102,7 @@ const Map = (props) => {
 
 			map.current.on('click', onMapClick);
 		}
-	}, [props.vehicles]);
+	}, [props.vehicles, props.stops]);
 
 	return (
 		<div id="map-container">
@@ -110,17 +126,6 @@ Map.propTypes = {
 			lineCode: PropTypes.number,
 		})
 	),
-	/*lines: PropTypes.arrayOf(
-		PropTypes.exact({
-			lineCode: PropTypes.number,
-			circular: PropTypes.bool,
-			sign1: PropTypes.string,
-			sign2: PropTypes.number,
-			orientation: PropTypes.number,
-			descriptionSignMain: PropTypes.string,
-			descriptionSignSecondary: PropTypes.string,
-		})
-	),*/
 	stops: PropTypes.arrayOf(
 		PropTypes.exact({
 			stopCode: PropTypes.number,

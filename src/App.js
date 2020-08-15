@@ -11,14 +11,6 @@ const App = () => {
 	const [stops, setStops] = useState([]);
 	const [lanes, setLanes] = useState([]);
 
-	const makeAsync = (func) => {
-		return (value) => {
-			setTimeout(() => {
-				func(value);
-			}, 50);
-		};
-	};
-
 	const olhoVivo = useRef(null);
 
 	useEffect(() => {
@@ -26,9 +18,9 @@ const App = () => {
 
 		const update = () => {
 			if (olhoVivo.current.authenticate) {
-				olhoVivo.current.fetchVehiclesInformation(makeAsync(setVehicles));
-				olhoVivo.current.fetchStopsInformation(makeAsync(setStops));
-				olhoVivo.current.fetchLanesInformation(makeAsync(setLanes));
+				olhoVivo.current.fetchVehiclesInformation(setVehicles);
+				olhoVivo.current.fetchStopsInformation(setStops);
+				olhoVivo.current.fetchLanesInformation(setLanes);
 			}
 		};
 
