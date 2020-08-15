@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import OlhoVivo from './OlhoVivo';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -16,16 +16,15 @@ const App = () => {
 
 	const olhoVivo = useRef(null);
 
-	const finishUpdate = () => {
-		if (loading) {
-			setLoading(false);
-			setLastUpdate(new Date());
-		}
-	};
+	const finishUpdate = useCallback(() => {
+		setLoading(false);
+		setLastUpdate(new Date());
+		setCurrentTime(new Date());
+	}, []);
 
 	const stringifyUpdateInterval = () => {
-		console.log(currentTime);
-		console.log(lastUpdate);
+		//console.log(currentTime);
+		//console.log(lastUpdate);
 		switch (
 			Math.floor((currentTime.getTime() - lastUpdate.getTime()) / 60000)
 		) {

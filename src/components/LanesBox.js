@@ -13,9 +13,9 @@ const LanesBox = (props) => {
 		});
 	};
 
-	const laneList = props.lanes.map((lane) => {
+	const laneList = props.lanes.map((lane, index) => {
 		return (
-			<li className="lane-li" key={lane.laneCode}>
+			<li className="lane-li" key={index}>
 				<span className="lane-name">
 					{lane.laneName}{' '}
 					<button
@@ -46,10 +46,10 @@ const LanesBox = (props) => {
 					}
 				>
 					{stopsForLanes[lane.laneCode] !== undefined
-						? stopsForLanes[lane.laneCode].map((stop) => (
+						? stopsForLanes[lane.laneCode].map((stop, index) => (
 								<li
+									key={'stop' + index + stop.stopCode}
 									onClick={props.updateMap(stop.stopCode)}
-									key={stop.stopCode}
 								>
 									{stop.stopName}
 								</li>

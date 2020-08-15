@@ -27,6 +27,9 @@ const OlhoVivo = () => {
 				mode: 'cors',
 			});
 			const responseData = await response.json();
+			if (responseData === null) {
+				return;
+			}
 			let currentVehicles = [];
 			setTimeout(() => {
 				responseData.l.forEach((line) => {

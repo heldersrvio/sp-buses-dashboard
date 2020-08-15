@@ -5,63 +5,62 @@ import L from 'leaflet';
 
 const Map = (props) => {
 	const map = useRef(null);
+	useEffect(() => {
+		console.log('Updated again');
+	}, [props.vehicles, props.stops]);
 
 	useEffect(() => {
+		if (map.current._container === undefined) {
+			map.current = L.map('mapid').setView([-23.542271, -46.636823], 17);
+		}
+		L.tileLayer(
+			'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}',
+			{
+				attribution:
+					'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+				maxZoom: 18,
+				id: 'mapbox/streets-v11',
+				tileSize: 512,
+				zoomOffset: -1,
+				accessToken: process.env.REACT_APP_MAPBOX_API_KEY,
+			}
+		).addTo(map.current);
+	}, []);
+
+	useEffect(() => {
+		const callback = props.finishLoading;
+
+		const vehicleMarkers = props.vehicles.map((vehicle) => {
+			const marker = L.marker([vehicle.latitude, vehicle.longitude]);
+			marker.bindPopup(
+				`<b>Ônibus ${vehicle.prefix}</b><br>Linha ${vehicle.lineCode}<br>${
+					vehicle.accessibility
+						? 'Acessível para pessoas com deficiência'
+						: 'Não acessível para pessoas com deficiência'
+				}`
+			);
+			return marker;
+		});
+
 		const addVehiclesToMap = () => {
-			for (let i = 0; i < props.vehicles.length; i++) {
+			console.log(vehicleMarkers.length);
+			for (let i = 0; i < vehicleMarkers.length; i++) {
 				setTimeout(() => {
-					const vehicleMarker = L.marker([
-						props.vehicles[i].latitude,
-						props.vehicles[i].longitude,
-					]).addTo(map.current);
-					vehicleMarker.bindPopup(
-						`<b>Ônibus ${props.vehicles[i].prefix}</b><br>Linha ${
-							props.vehicles[i].lineCode
-						}<br>${
-							props.vehicles[i].accessibility
-								? 'Acessível para pessoas com deficiência'
-								: 'Não acessível para pessoas com deficiência'
-						}`
-					);
-					if (i === props.vehicles.length - 1) {
-						props.finishLoading();
+					vehicleMarkers[i].addTo(map.current);
+					if (i === vehicleMarkers.length - 1) {
+						callback();
 					}
 				}, 0);
 			}
 		};
 
-		const addStopsToMap = () => {
-			for (let i = 0; i < props.stops.length; i++) {
-				setTimeout(() => {
-					const stopMarker = L.marker([
-						props.stops[i].latitude,
-						props.stops[i].longitude,
-					]).addTo(map.current);
-					stopMarker.setOpacity(0.5);
-					stopMarker.bindPopup(
-						`<b>Parada ${props.stops[i].stopName}</b><br>Endereço: ${props.stops[i].stopAddress}`
-					);
-				}, 0);
+		const removeVehicleMarkers = () => {
+			for (let i = 0; i < vehicleMarkers.length; i++) {
+				map.current.removeLayer(vehicleMarkers[i]);
 			}
 		};
 
 		if (map !== null && map.current !== undefined) {
-			if (map.current._container === undefined) {
-				map.current = L.map('mapid').setView([-23.542271, -46.636823], 17);
-			}
-			L.tileLayer(
-				'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}',
-				{
-					attribution:
-						'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-					maxZoom: 18,
-					id: 'mapbox/streets-v11',
-					tileSize: 512,
-					zoomOffset: -1,
-					accessToken: process.env.REACT_APP_MAPBOX_API_KEY,
-				}
-			).addTo(map.current);
-
 			/*L.tileLayer('https://{s}.tile.jawg.io/jawg-matrix/{z}/{x}/{y}{r}.png?access-token={accessToken}', {
                 attribution: '<a href="http://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
                 minZoom: 0,
@@ -92,8 +91,8 @@ const Map = (props) => {
             circle.bindPopup("I am a circle.");
             polygon.bindPopup("I am a polygon.");
             */
+			removeVehicleMarkers();
 			addVehiclesToMap();
-			addStopsToMap();
 
 			let popup = L.popup();
 			let onMapClick = (e) => {
@@ -105,7 +104,38 @@ const Map = (props) => {
 
 			map.current.on('click', onMapClick);
 		}
-	}, [props]);
+	}, [props.vehicles, props.finishLoading]);
+
+	useEffect(() => {
+		const stopMarkers = props.stops.map((stop) => {
+			const marker = L.marker([stop.latitude, stop.longitude]);
+			marker.setOpacity(0.5);
+			marker.bindPopup(
+				`<b>Parada ${stop.stopName}</b><br>Endereço: ${stop.stopAddress}`
+			);
+			return marker;
+		});
+
+		const addStopsToMap = () => {
+			console.log(stopMarkers.length);
+			for (let i = 0; i < stopMarkers.length; i++) {
+				setTimeout(() => {
+					stopMarkers[i].addTo(map.current);
+				}, 0);
+			}
+		};
+
+		const removeStopMarkers = () => {
+			for (let i = 0; i < stopMarkers.length; i++) {
+				map.current.removeLayer(stopMarkers[i]);
+			}
+		};
+
+		if (map !== null && map.current !== undefined) {
+			removeStopMarkers();
+			addStopsToMap();
+		}
+	}, [props.stops]);
 
 	return (
 		<div id="map-container">
