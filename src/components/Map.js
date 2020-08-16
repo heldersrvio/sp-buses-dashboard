@@ -16,6 +16,17 @@ const Map = (props) => {
 					[stopsWithCode[0].latitude, stopsWithCode[0].longitude],
 					17
 				);
+				map.current.eachLayer((layer) => {
+					if (
+						layer.getLatLng !== undefined &&
+						layer
+							.getLatLng()
+							.equals([stopsWithCode[0].latitude, stopsWithCode[0].longitude])
+					) {
+						layer.openPopup();
+						return;
+					}
+				});
 				return;
 			}
 			const vehiclesWithCode = props.vehicles.filter(
@@ -68,14 +79,33 @@ const Map = (props) => {
 	};
 
 	useEffect(() => {
-		console.log('Updated again');
-	}, [props.vehicles, props.stops]);
-
-	useEffect(() => {
-		if (map.current._container === undefined) {
-			map.current = L.map('mapid').setView([-23.542271, -46.636823], 17);
-		}
-		L.tileLayer(
+		const darkTileLayer = L.tileLayer(
+			'https://{s}.tile.jawg.io/jawg-matrix/{z}/{x}/{y}{r}.png?access-token={accessToken}',
+			{
+				attribution:
+					'<a href="http://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+				minZoom: 0,
+				maxZoom: 22,
+				subdomains: 'abcd',
+				accessToken: process.env.REACT_APP_JAWG_API_KEY,
+			}
+		);
+		const terrainTileLayer = L.tileLayer(
+			'https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png',
+			{
+				maxZoom: 20,
+				attribution:
+					'&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
+			}
+		);
+		const satelliteTileLayer = L.tileLayer(
+			'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+			{
+				attribution:
+					'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
+			}
+		);
+		const standardTileLayer = L.tileLayer(
 			'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}',
 			{
 				attribution:
@@ -86,123 +116,69 @@ const Map = (props) => {
 				zoomOffset: -1,
 				accessToken: process.env.REACT_APP_MAPBOX_API_KEY,
 			}
-		).addTo(map.current);
-	}, []);
+		);
 
-	useEffect(() => {
-		const callback = props.finishLoading;
-
-		const vehicleMarkers = props.vehicles.map((vehicle) => {
-			const marker = L.marker([vehicle.latitude, vehicle.longitude]);
-			marker.bindPopup(
-				`<b>Ônibus ${vehicle.prefix}</b><br>Linha ${vehicle.lineCode}<br>${
-					vehicle.accessibility
-						? 'Acessível para pessoas com deficiência'
-						: 'Não acessível para pessoas com deficiência'
-				}`
-			);
-			return marker;
-		});
-
-		const addVehiclesToMap = () => {
-			for (let i = 0; i < vehicleMarkers.length; i++) {
-				setTimeout(() => {
-					vehicleMarkers[i].addTo(map.current);
-					if (i === vehicleMarkers.length - 1) {
-						callback();
-					}
-				}, 0);
-			}
-		};
-
-		const removeVehicleMarkers = () => {
-			for (let i = 0; i < vehicleMarkers.length; i++) {
-				map.current.removeLayer(vehicleMarkers[i]);
-			}
-		};
-
-		if (map !== null && map.current !== undefined) {
-			/*L.tileLayer('https://{s}.tile.jawg.io/jawg-matrix/{z}/{x}/{y}{r}.png?access-token={accessToken}', {
-                attribution: '<a href="http://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-                minZoom: 0,
-                maxZoom: 22,
-                subdomains: 'abcd',
-                accessToken: process.env.REACT_APP_JAWG_API_KEY,
-            }).addTo(mymap);*/
-			/*L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}{r}.{ext}', {
-                attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-                subdomains: 'abcd',
-                minZoom: 0,
-                maxZoom: 18,
-                ext: 'png'
-            }).addTo(mymap);*/
-			/*let marker = L.marker([51.5, -0.09]).addTo(mymap);
-            let circle = L.circle([51.508, -0.11], {
-                color: 'red',
-                fillColor: '#f03',
-                fillOpacity: 0.5,
-                radius: 500
-            }).addTo(mymap);
-            let polygon = L.polygon([
-                [51.509, -0.08],
-                [51.503, -0.06],
-                [51.51, -0.047]
-            ]).addTo(mymap);
-            marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
-            circle.bindPopup("I am a circle.");
-            polygon.bindPopup("I am a polygon.");
-            */
-			removeVehicleMarkers();
-			addVehiclesToMap();
-
-			let popup = L.popup();
-			let onMapClick = (e) => {
-				popup
-					.setLatLng(e.latlng)
-					.setContent('You clicked the map at ' + e.latlng.toString())
-					.openOn(map.current);
-			};
-
-			map.current.on('click', onMapClick);
-		}
-	}, [props.vehicles, props.finishLoading]);
-
-	useEffect(() => {
 		const loadEstimatedTimes = props.loadEstimatedTimes;
 
-		const stopMarkers = props.stops.map((stop) => {
-			const marker = L.marker([stop.latitude, stop.longitude]);
-			marker.setOpacity(0.5);
-			marker.bindPopup(
-				`<b>Parada ${stop.stopName}</b><br>Endereço: ${stop.stopAddress}<br><button id="button-${stop.stopCode}" class="show-estimated-time-button">Mostrar previsões de chegada</button><ul id="estimations-${stop.stopCode}"></ul>`
-			);
-			marker.on('click', (e) => {
-				document
-					.getElementById(`button-${stop.stopCode}`)
-					.addEventListener('click', (e) => loadEstimatedTimes(stop.stopCode));
-			});
-			return marker;
-		});
+		const vehicleMarkers = L.layerGroup(
+			props.vehicles.map((vehicle) => {
+				const marker = L.marker([vehicle.latitude, vehicle.longitude]);
+				marker.bindPopup(
+					`<b>Ônibus ${vehicle.prefix}</b><br>Linha ${vehicle.lineCode}<br>${
+						vehicle.accessibility
+							? 'Acessível para pessoas com deficiência'
+							: 'Não acessível para pessoas com deficiência'
+					}`
+				);
+				return marker;
+			})
+		);
 
-		const addStopsToMap = () => {
-			for (let i = 0; i < stopMarkers.length; i++) {
-				setTimeout(() => {
-					stopMarkers[i].addTo(map.current);
-				}, 0);
-			}
+		const stopMarkers = L.layerGroup(
+			props.stops.map((stop) => {
+				const marker = L.marker([stop.latitude, stop.longitude]);
+				marker.setOpacity(0.5);
+				marker.bindPopup(
+					`<b>Parada ${stop.stopName}</b><br>Endereço: ${stop.stopAddress}<br><button id="button-${stop.stopCode}" class="show-estimated-time-button">Mostrar previsões de chegada</button><ul id="estimations-${stop.stopCode}"></ul>`
+				);
+				marker.on('click', (e) => {
+					document
+						.getElementById(`button-${stop.stopCode}`)
+						.addEventListener('click', (e) =>
+							loadEstimatedTimes(stop.stopCode)
+						);
+				});
+				return marker;
+			})
+		);
+
+		const baseMaps = {
+			Padrão: standardTileLayer,
+			Escuro: darkTileLayer,
+			Terreno: terrainTileLayer,
+			Satélite: satelliteTileLayer,
 		};
 
-		const removeStopMarkers = () => {
-			for (let i = 0; i < stopMarkers.length; i++) {
-				map.current.removeLayer(stopMarkers[i]);
-			}
+		const overlayMaps = {
+			'Exibir veículos': vehicleMarkers,
+			'Exibir paradas': stopMarkers,
 		};
 
-		if (map !== null && map.current !== undefined) {
-			removeStopMarkers();
-			addStopsToMap();
+		if (map.current._container === undefined) {
+			map.current = L.map('mapid', {
+				layers: [standardTileLayer, vehicleMarkers, stopMarkers],
+			}).setView([-23.542271, -46.636823], 17);
+			L.control.layers(baseMaps, overlayMaps).addTo(map.current);
+		} else {
+			const center = map.current.getCenter();
+			const zoom = map.current.getZoom();
+			map.current.remove();
+			map.current = L.map('mapid', {
+				layers: [standardTileLayer, vehicleMarkers, stopMarkers],
+			}).setView(center, zoom);
+			L.control.layers(baseMaps, overlayMaps).addTo(map.current);
 		}
-	}, [props.stops, props.loadEstimatedTimes]);
+	}, [props.vehicles, props.stops, props.loadEstimatedTimes]);
 
 	return (
 		<div id="map-container">
@@ -238,7 +214,6 @@ Map.propTypes = {
 			longitude: PropTypes.number,
 		})
 	),
-	finishLoading: PropTypes.func,
 	loadEstimatedTimes: PropTypes.func,
 };
 

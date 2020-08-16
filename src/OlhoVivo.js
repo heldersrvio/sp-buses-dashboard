@@ -20,7 +20,7 @@ const OlhoVivo = () => {
 		}
 	})();
 
-	const fetchVehiclesInformation = async (setVehicles) => {
+	const fetchVehiclesInformation = async (setVehicles, finishLoading) => {
 		try {
 			const response = await fetch(baseURL + 'Posicao', {
 				method: 'GET',
@@ -44,6 +44,7 @@ const OlhoVivo = () => {
 					});
 				});
 				setVehicles(currentVehicles);
+				finishLoading();
 			}, 50);
 		} catch (error) {
 			console.log('Problem fetching vehicles information');

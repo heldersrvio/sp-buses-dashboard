@@ -7,14 +7,14 @@ const Header = (props) => {
 		<div id="header-bar">
 			<h1>Ônibus São Paulo</h1>
 			<div id="filter-container">
-				<Filter filterMap={props.filterMap} />
+				<Filter updateDashboard={props.updateDashboard} />
 			</div>
 		</div>
 	);
 };
 
 Header.propTypes = {
-	filterMap: PropTypes.func,
+	updateDashboard: PropTypes.func,
 };
 
 export default Header;

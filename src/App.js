@@ -13,19 +13,19 @@ const App = () => {
 	const [loading, setLoading] = useState(false);
 	const [lastUpdate, setLastUpdate] = useState(new Date());
 	const [currentTime, setCurrentTime] = useState(new Date());
+	const [dashboardOptions, setDashboardOptions] = useState({
+		showLines: true,
+		showLanes: true,
+		showMap: true,
+	});
 
 	const olhoVivo = useRef(null);
-
-	const finishUpdate = useCallback(() => {
-		setLoading(false);
-		setLastUpdate(new Date());
-		setCurrentTime(new Date());
-	}, []);
 
 	const updateEstimatedTimes = (stopCode, list) => {
 		const estimatedTimesDiv = document.getElementById(
 			`estimations-${stopCode}`
 		);
+		estimatedTimesDiv.textContent = '';
 		if (estimatedTimesDiv !== null) {
 			list.forEach((estimation) => {
 				const li = document.createElement('li');
@@ -45,8 +45,6 @@ const App = () => {
 	}, []);
 
 	const stringifyUpdateInterval = () => {
-		//console.log(currentTime);
-		//console.log(lastUpdate);
 		switch (
 			Math.floor((currentTime.getTime() - lastUpdate.getTime()) / 60000)
 		) {
@@ -58,10 +56,8 @@ const App = () => {
 				return '2 minutos';
 			case 3:
 				return '3 minutos';
-			case 4:
-				return '4 minutos';
 			default:
-				return '5 minutos';
+				return '4 minutos';
 		}
 	};
 
@@ -78,10 +74,16 @@ const App = () => {
 	useEffect(() => {
 		olhoVivo.current = OlhoVivo();
 
+		const finishUpdate = () => {
+			setLoading(false);
+			setLastUpdate(new Date());
+			setCurrentTime(new Date());
+		};
+
 		const update = () => {
 			if (olhoVivo.current.authenticate) {
 				setLoading(true);
-				olhoVivo.current.fetchVehiclesInformation(setVehicles);
+				olhoVivo.current.fetchVehiclesInformation(setVehicles, finishUpdate);
 				olhoVivo.current.fetchStopsInformation(setStops);
 				olhoVivo.current.fetchLanesInformation(setLanes);
 			}
@@ -101,34 +103,41 @@ const App = () => {
 	return (
 		<div className="App">
 			<div id="header-container">
-				<Header filterMap={() => {}} />
+				<Header updateDashboard={setDashboardOptions} />
 			</div>
 			<div id="dashboard">
 				<div id="left-section">
-					<LinesBox
-						fetchLinesInformation={
-							olhoVivo.current !== null
-								? olhoVivo.current.fetchLinesInformation
-								: () => {}
-						}
-					/>
-					<LanesBox
-						updateMap={() => {}}
-						lanes={lanes}
-						fetchStopsForLane={
-							olhoVivo.current !== null
-								? olhoVivo.current.fetchStopsForLane
-								: () => {}
-						}
-					/>
+					{dashboardOptions.showLines ? (
+						<LinesBox
+							fetchLinesInformation={
+								olhoVivo.current !== null
+									? olhoVivo.current.fetchLinesInformation
+									: () => {}
+							}
+						/>
+					) : null}
+					{dashboardOptions.showLanes ? (
+						<LanesBox
+							updateMap={() => {}}
+							lanes={lanes}
+							fetchStopsForLane={
+								olhoVivo.current !== null
+									? olhoVivo.current.fetchStopsForLane
+									: () => {}
+							}
+						/>
+					) : null}
 				</div>
 				<div id="right-section">
-					<Map
-						vehicles={vehicles}
-						stops={stops}
-						finishLoading={finishUpdate}
-						loadEstimatedTimes={loadEstimatedTimes}
-					/>
+					{dashboardOptions.showMap ? (
+						<Map
+							vehicles={vehicles}
+							stops={stops}
+							loadEstimatedTimes={loadEstimatedTimes}
+						/>
+					) : (
+						true
+					)}
 				</div>
 			</div>
 			<Footer loading={loading} lastUpdateTime={stringifyUpdateInterval()} />
