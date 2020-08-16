@@ -11,7 +11,7 @@ const Filter = (props) => {
 	useEffect(() => {
 		document.addEventListener('click', (event) => {
 			if (
-				filterRef !== null &&
+				filterRef.current !== null &&
 				filterRef.current !== undefined &&
 				!filterRef.current.contains(event.target)
 			) {

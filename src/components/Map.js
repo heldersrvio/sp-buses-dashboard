@@ -2,9 +2,11 @@ import React, { useEffect, useRef } from 'react';
 import SearchBar from './SearchBar';
 import PropTypes from 'prop-types';
 import L from 'leaflet';
+import 'leaflet-routing-machine';
 
 const Map = (props) => {
 	const map = useRef(null);
+	const routingControl = useRef(null);
 
 	const focusOnMarker = (code) => {
 		if (map !== null && map.current !== undefined) {
@@ -122,7 +124,9 @@ const Map = (props) => {
 
 		const vehicleMarkers = L.layerGroup(
 			props.vehicles.map((vehicle) => {
-				const marker = L.marker([vehicle.latitude, vehicle.longitude]);
+				const marker = L.marker([vehicle.latitude, vehicle.longitude], {
+					draggable: false,
+				});
 				marker.bindPopup(
 					`<b>Ônibus ${vehicle.prefix}</b><br>Linha ${vehicle.lineCode}<br>${
 						vehicle.accessibility
@@ -136,7 +140,9 @@ const Map = (props) => {
 
 		const stopMarkers = L.layerGroup(
 			props.stops.map((stop) => {
-				const marker = L.marker([stop.latitude, stop.longitude]);
+				const marker = L.marker([stop.latitude, stop.longitude], {
+					draggable: false,
+				});
 				marker.setOpacity(0.5);
 				marker.bindPopup(
 					`<b>Parada ${stop.stopName}</b><br>Endereço: ${stop.stopAddress}<br><button id="button-${stop.stopCode}" class="show-estimated-time-button">Mostrar previsões de chegada</button><ul id="estimations-${stop.stopCode}"></ul>`
@@ -164,11 +170,15 @@ const Map = (props) => {
 			'Exibir paradas': stopMarkers,
 		};
 
+		const addDefaultConfiguration = () => {
+			L.control.layers(baseMaps, overlayMaps).addTo(map.current);
+		};
+
 		if (map.current._container === undefined) {
 			map.current = L.map('mapid', {
 				layers: [standardTileLayer, vehicleMarkers, stopMarkers],
 			}).setView([-23.542271, -46.636823], 17);
-			L.control.layers(baseMaps, overlayMaps).addTo(map.current);
+			addDefaultConfiguration();
 		} else {
 			const center = map.current.getCenter();
 			const zoom = map.current.getZoom();
@@ -176,9 +186,41 @@ const Map = (props) => {
 			map.current = L.map('mapid', {
 				layers: [standardTileLayer, vehicleMarkers, stopMarkers],
 			}).setView(center, zoom);
-			L.control.layers(baseMaps, overlayMaps).addTo(map.current);
+			addDefaultConfiguration();
 		}
 	}, [props.vehicles, props.stops, props.loadEstimatedTimes]);
+
+	useEffect(() => {
+		if (props.currentRoute.length > 0) {
+			if (
+				routingControl.current !== null &&
+				routingControl.current !== undefined
+			) {
+				routingControl.current
+					.getPlan()
+					.setWaypoints([
+						L.latLng(props.currentRoute[0]),
+						L.latLng(props.currentRoute[1]),
+					]);
+			} else {
+				routingControl.current = L.Routing.control({
+					waypoints: [
+						L.latLng(props.currentRoute[0]),
+						L.latLng(props.currentRoute[1]),
+					],
+					routeWhileDragging: true,
+					router: L.routing.mapbox(process.env.REACT_APP_MAPBOX_API_KEY, {
+						language: 'pt-BR',
+					}),
+					lineOptions: {
+						styles: [{ color: 'red', opacity: 1, weight: 9 }],
+					},
+				});
+				routingControl.current.addTo(map.current);
+			}
+			routingControl.current.hide();
+		}
+	}, [props.currentRoute]);
 
 	return (
 		<div id="map-container">
@@ -214,6 +256,7 @@ Map.propTypes = {
 			longitude: PropTypes.number,
 		})
 	),
+	currentRoute: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
 	loadEstimatedTimes: PropTypes.func,
 };
 

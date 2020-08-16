@@ -157,11 +157,14 @@ const OlhoVivo = () => {
 		);
 		const responseData = await response.json();
 		let currentEstimations = [];
+		const stopCoordinates = [responseData.p.py, responseData.p.px];
 		responseData.p.l.forEach((line) => {
 			line.vs.forEach((vehicle) => {
 				currentEstimations.push({
 					prefix: vehicle.p,
 					time: vehicle.t,
+					vehicleCoordinates: [vehicle.py, vehicle.px],
+					stopCoordinates,
 				});
 			});
 		});

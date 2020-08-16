@@ -13,6 +13,7 @@ const App = () => {
 	const [loading, setLoading] = useState(false);
 	const [lastUpdate, setLastUpdate] = useState(new Date());
 	const [currentTime, setCurrentTime] = useState(new Date());
+	const [currentRoute, setCurrentRoute] = useState([]);
 	const [dashboardOptions, setDashboardOptions] = useState({
 		showLines: true,
 		showLanes: true,
@@ -30,6 +31,12 @@ const App = () => {
 			list.forEach((estimation) => {
 				const li = document.createElement('li');
 				li.textContent = `Previsão para veículo ${estimation.prefix}: ${estimation.time}`;
+				li.onclick = () => {
+					setCurrentRoute([
+						estimation.vehicleCoordinates,
+						estimation.stopCoordinates,
+					]);
+				};
 				estimatedTimesDiv.appendChild(li);
 			});
 		}
@@ -133,6 +140,7 @@ const App = () => {
 						<Map
 							vehicles={vehicles}
 							stops={stops}
+							currentRoute={currentRoute}
 							loadEstimatedTimes={loadEstimatedTimes}
 						/>
 					) : (
