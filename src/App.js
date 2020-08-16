@@ -29,7 +29,7 @@ const App = () => {
 		if (estimatedTimesDiv !== null) {
 			list.forEach((estimation) => {
 				const li = document.createElement('li');
-				li.textContent = `Prefixo: ${estimation.prefix}\nChegada prevista: ${estimation.time}`;
+				li.textContent = `Previsão para veículo ${estimation.prefix}: ${estimation.time}`;
 				estimatedTimesDiv.appendChild(li);
 			});
 		}
