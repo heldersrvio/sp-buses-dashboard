@@ -6,9 +6,9 @@ const SearchBar = (props) => {
 	const [lookUpInfo, setLookUpInfo] = useState([]);
 	const [loading, setLoading] = useState(false);
 
-	const lookUp = async (term) => {
+	const lookUp = (term) => {
 		setLoading(true);
-		const result = await props.queryInformation(term);
+		const result = props.queryInformation(term);
 		setLookUpInfo(result);
 		setLoading(false);
 	};
@@ -26,13 +26,16 @@ const SearchBar = (props) => {
 		return (
 			<div
 				className="search-result-card"
+				key={`search-result-card-${result.title}`}
 				onClick={() => props.updateMap(result.title)}
 			>
 				<div className="search-results-card-left-section">
 					<img className="search-result-icon" src="/" alt="Vehicle" />
 				</div>
 				<div className="search-results-card-right-section">
-					<span className="search-result-title">{result.title}</span>
+					<span className="search-result-title">
+						{result.type.toUpperCase() + ' ' + result.title}
+					</span>
 					<span className="search-result-info">{result.info}</span>
 				</div>
 			</div>

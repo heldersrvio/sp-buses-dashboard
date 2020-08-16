@@ -5,6 +5,68 @@ import L from 'leaflet';
 
 const Map = (props) => {
 	const map = useRef(null);
+
+	const focusOnMarker = (code) => {
+		if (map !== null && map.current !== undefined) {
+			const stopsWithCode = props.stops.filter(
+				(stop) => stop.stopCode === code
+			);
+			if (stopsWithCode.length > 0) {
+				map.current.setView(
+					[stopsWithCode[0].latitude, stopsWithCode[0].longitude],
+					17
+				);
+				return;
+			}
+			const vehiclesWithCode = props.vehicles.filter(
+				(vehicle) => vehicle.vehicleCode === code
+			);
+			if (vehiclesWithCode.length > 0) {
+				map.current.setView(
+					[vehiclesWithCode[0].latitude, vehiclesWithCode[0].longitude],
+					17
+				);
+			}
+		}
+		return;
+	};
+
+	const queryInformation = (searchTerm) => {
+		let items = [];
+		const term = searchTerm.toUpperCase();
+		if (term === '') {
+			return items;
+		}
+		for (let i = 0; i < props.stops.length; i++) {
+			if (
+				props.stops[i].stopCode.toString().includes(term) ||
+				props.stops[i].stopName.toString().includes(term)
+			) {
+				items.push({
+					title: props.stops[i].stopCode,
+					type: 'parada',
+					info: props.stops[i].stopName,
+				});
+				if (items.length === 5) {
+					return items;
+				}
+			}
+		}
+		for (let i = 0; i < props.vehicles.length; i++) {
+			if (props.vehicles[i].prefix.toString().includes(term)) {
+				items.push({
+					title: props.vehicles[i].prefix,
+					type: 'ônibus',
+					info: '',
+				});
+				if (items.length === 5) {
+					return items;
+				}
+			}
+		}
+		return items;
+	};
+
 	useEffect(() => {
 		console.log('Updated again');
 	}, [props.vehicles, props.stops]);
@@ -43,7 +105,6 @@ const Map = (props) => {
 		});
 
 		const addVehiclesToMap = () => {
-			console.log(vehicleMarkers.length);
 			for (let i = 0; i < vehicleMarkers.length; i++) {
 				setTimeout(() => {
 					vehicleMarkers[i].addTo(map.current);
@@ -111,7 +172,6 @@ const Map = (props) => {
 
 		const stopMarkers = props.stops.map((stop) => {
 			const marker = L.marker([stop.latitude, stop.longitude]);
-			console.log(stop.latitude, stop.longitude);
 			marker.setOpacity(0.5);
 			marker.bindPopup(
 				`<b>Parada ${stop.stopName}</b><br>Endereço: ${stop.stopAddress}<br><button id="button-${stop.stopCode}" class="show-estimated-time-button">Mostrar previsões de chegada</button><ul id="estimations-${stop.stopCode}"></ul>`
@@ -125,7 +185,6 @@ const Map = (props) => {
 		});
 
 		const addStopsToMap = () => {
-			console.log(stopMarkers.length);
 			for (let i = 0; i < stopMarkers.length; i++) {
 				setTimeout(() => {
 					stopMarkers[i].addTo(map.current);
@@ -147,7 +206,10 @@ const Map = (props) => {
 
 	return (
 		<div id="map-container">
-			<SearchBar updateMap={() => {}} queryInformation={() => {}} />
+			<SearchBar
+				updateMap={focusOnMarker}
+				queryInformation={queryInformation}
+			/>
 			<div
 				id="mapid"
 				ref={map}
