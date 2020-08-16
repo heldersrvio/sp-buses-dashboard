@@ -128,14 +128,14 @@ const OlhoVivo = () => {
 	};
 
 	const fetchStopsForLane = async (laneCode, setStopsForLane) => {
-		const laneStopsResponse = await fetch(
+		const response = await fetch(
 			baseURL + `Parada/BuscarParadasPorCorredor?codigoCorredor=${laneCode}`,
 			{
 				method: 'GET',
 				mode: 'cors',
 			}
 		);
-		const responseData = await laneStopsResponse.json();
+		const responseData = await response.json();
 		let currentStops = [];
 		responseData.forEach((stop) => {
 			currentStops.push({
@@ -146,6 +146,27 @@ const OlhoVivo = () => {
 		setStopsForLane(laneCode, currentStops);
 	};
 
+	const fetchEstimatedArrivalTimes = async (stopCode, update) => {
+		const response = await fetch(
+			baseURL + `Previsao/Parada?codigoParada=${stopCode}`,
+			{
+				method: 'GET',
+				mode: 'cors',
+			}
+		);
+		const responseData = await response.json();
+		let currentEstimations = [];
+		responseData.p.l.forEach((line) => {
+			line.vs.forEach((vehicle) => {
+				currentEstimations.push({
+					prefix: vehicle.p,
+					time: vehicle.t,
+				});
+			});
+		});
+		update(stopCode, currentEstimations);
+	};
+
 	return {
 		authenticate,
 		fetchVehiclesInformation,
@@ -153,6 +174,7 @@ const OlhoVivo = () => {
 		fetchLanesInformation,
 		fetchLinesInformation,
 		fetchStopsForLane,
+		fetchEstimatedArrivalTimes,
 	};
 };
 

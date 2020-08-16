@@ -22,6 +22,28 @@ const App = () => {
 		setCurrentTime(new Date());
 	}, []);
 
+	const updateEstimatedTimes = (stopCode, list) => {
+		const estimatedTimesDiv = document.getElementById(
+			`estimations-${stopCode}`
+		);
+		if (estimatedTimesDiv !== null) {
+			list.forEach((estimation) => {
+				const li = document.createElement('li');
+				li.textContent = `Prefixo: ${estimation.prefix}\nChegada prevista: ${estimation.time}`;
+				estimatedTimesDiv.appendChild(li);
+			});
+		}
+	};
+
+	const loadEstimatedTimes = useCallback((stopCode) => {
+		if (olhoVivo.current.authenticate) {
+			olhoVivo.current.fetchEstimatedArrivalTimes(
+				stopCode,
+				updateEstimatedTimes
+			);
+		}
+	}, []);
+
 	const stringifyUpdateInterval = () => {
 		//console.log(currentTime);
 		//console.log(lastUpdate);
@@ -101,7 +123,12 @@ const App = () => {
 					/>
 				</div>
 				<div id="right-section">
-					<Map vehicles={vehicles} stops={stops} finishLoading={finishUpdate} />
+					<Map
+						vehicles={vehicles}
+						stops={stops}
+						finishLoading={finishUpdate}
+						loadEstimatedTimes={loadEstimatedTimes}
+					/>
 				</div>
 			</div>
 			<Footer loading={loading} lastUpdateTime={stringifyUpdateInterval()} />

@@ -107,12 +107,20 @@ const Map = (props) => {
 	}, [props.vehicles, props.finishLoading]);
 
 	useEffect(() => {
+		const loadEstimatedTimes = props.loadEstimatedTimes;
+
 		const stopMarkers = props.stops.map((stop) => {
 			const marker = L.marker([stop.latitude, stop.longitude]);
+			console.log(stop.latitude, stop.longitude);
 			marker.setOpacity(0.5);
 			marker.bindPopup(
-				`<b>Parada ${stop.stopName}</b><br>Endereço: ${stop.stopAddress}`
+				`<b>Parada ${stop.stopName}</b><br>Endereço: ${stop.stopAddress}<br><button id="button-${stop.stopCode}" class="show-estimated-time-button">Mostrar previsões de chegada</button><ul id="estimations-${stop.stopCode}"></ul>`
 			);
+			marker.on('click', (e) => {
+				document
+					.getElementById(`button-${stop.stopCode}`)
+					.addEventListener('click', (e) => loadEstimatedTimes(stop.stopCode));
+			});
 			return marker;
 		});
 
@@ -135,7 +143,7 @@ const Map = (props) => {
 			removeStopMarkers();
 			addStopsToMap();
 		}
-	}, [props.stops]);
+	}, [props.stops, props.loadEstimatedTimes]);
 
 	return (
 		<div id="map-container">
@@ -169,6 +177,7 @@ Map.propTypes = {
 		})
 	),
 	finishLoading: PropTypes.func,
+	loadEstimatedTimes: PropTypes.func,
 };
 
 export default Map;
