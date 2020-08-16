@@ -122,10 +122,24 @@ const Map = (props) => {
 
 		const loadEstimatedTimes = props.loadEstimatedTimes;
 
+		const busIcon = L.icon({
+			iconUrl: 'https://image.flaticon.com/icons/png/512/171/171255.png',
+			iconSize: [38, 38],
+			iconAnchor: [10, 19],
+			popupAnchor: [9, -19],
+		});
+
+		const stopIcon = L.icon({
+			iconUrl:
+				'http://icons.iconarchive.com/icons/google/noto-emoji-travel-places/1024/42561-bus-stop-icon.png',
+			iconSize: [38, 38],
+		});
+
 		const vehicleMarkers = L.layerGroup(
 			props.vehicles.map((vehicle) => {
 				const marker = L.marker([vehicle.latitude, vehicle.longitude], {
 					draggable: false,
+					icon: busIcon,
 				});
 				marker.bindPopup(
 					`<b>Ônibus ${vehicle.prefix}</b><br>Linha ${vehicle.lineCode}<br>${
@@ -142,8 +156,8 @@ const Map = (props) => {
 			props.stops.map((stop) => {
 				const marker = L.marker([stop.latitude, stop.longitude], {
 					draggable: false,
+					icon: stopIcon,
 				});
-				marker.setOpacity(0.5);
 				marker.bindPopup(
 					`<b>Parada ${stop.stopName}</b><br>Endereço: ${stop.stopAddress}<br><button id="button-${stop.stopCode}" class="show-estimated-time-button">Mostrar previsões de chegada</button><ul id="estimations-${stop.stopCode}"></ul>`
 				);
@@ -176,15 +190,15 @@ const Map = (props) => {
 
 		if (map.current._container === undefined) {
 			map.current = L.map('mapid', {
-				layers: [standardTileLayer, vehicleMarkers, stopMarkers],
-			}).setView([-23.542271, -46.636823], 17);
+				layers: [terrainTileLayer, vehicleMarkers, stopMarkers],
+			}).setView([-23.542271, -46.636823], 15);
 			addDefaultConfiguration();
 		} else {
 			const center = map.current.getCenter();
 			const zoom = map.current.getZoom();
 			map.current.remove();
 			map.current = L.map('mapid', {
-				layers: [standardTileLayer, vehicleMarkers, stopMarkers],
+				layers: [terrainTileLayer, vehicleMarkers, stopMarkers],
 			}).setView(center, zoom);
 			addDefaultConfiguration();
 		}
@@ -215,6 +229,7 @@ const Map = (props) => {
 					lineOptions: {
 						styles: [{ color: 'red', opacity: 1, weight: 9 }],
 					},
+					createMarker: (i, n) => null,
 				});
 				routingControl.current.addTo(map.current);
 			}
