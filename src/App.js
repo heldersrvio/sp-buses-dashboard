@@ -134,18 +134,18 @@ const App = () => {
 						/>
 					) : null}
 				</div>
-				<div id="right-section">
 					{dashboardOptions.showMap ? (
-						<Map
-							vehicles={vehicles}
-							stops={stops}
-							currentRoute={currentRoute}
-							loadEstimatedTimes={loadEstimatedTimes}
-						/>
+						<div id="right-section">
+							<Map
+								vehicles={vehicles}
+								stops={stops}
+								currentRoute={currentRoute}
+								loadEstimatedTimes={loadEstimatedTimes}
+							/>
+						</div>
 					) : (
-						true
+						null
 					)}
-				</div>
 			</div>
 			<Footer loading={loading} lastUpdateTime={stringifyUpdateInterval()} />
 		</div>

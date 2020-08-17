@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import './styles/SearchBar.css'
 
 const SearchBar = (props) => {
 	const [currentInput, setCurrentInput] = useState('');
@@ -30,7 +31,7 @@ const SearchBar = (props) => {
 				onClick={() => props.updateMap(result.title)}
 			>
 				<div className="search-results-card-left-section">
-					<img className="search-result-icon" src="/" alt="Vehicle" />
+					<img className="search-result-icon" src={result.type === 'ônibus' ? 'https://image.flaticon.com/icons/png/512/171/171255.png' : 'http://icons.iconarchive.com/icons/google/noto-emoji-travel-places/1024/42561-bus-stop-icon.png'} alt="Vehicle" />
 				</div>
 				<div className="search-results-card-right-section">
 					<span className="search-result-title">
@@ -55,16 +56,13 @@ const SearchBar = (props) => {
 				<input
 					type="text"
 					id="search-bar-input"
+					placeholder="Procurar ônibus e paradas"
 					value={currentInput}
 					onChange={(e) => {
 						setCurrentInput(e.target.value);
 						lookUp(e.target.value);
 					}}
 				></input>
-				<button
-					id="search-bar-button"
-					onClick={() => props.updateMap(currentInput)}
-				></button>
 			</div>
 			<div
 				id="search-results"

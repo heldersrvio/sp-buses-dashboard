@@ -1,0 +1,4 @@
+#lanes-box-container {
+    flex: 1 1 0px;
+    overflow: scroll;
+}

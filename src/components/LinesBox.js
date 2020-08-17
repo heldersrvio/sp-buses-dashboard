@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import './styles/LinesBox.css';
 
 const LinesBox = (props) => {
 	const [input, setInput] = useState('');

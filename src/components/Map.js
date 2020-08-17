@@ -3,6 +3,7 @@ import SearchBar from './SearchBar';
 import PropTypes from 'prop-types';
 import L from 'leaflet';
 import 'leaflet-routing-machine';
+import './styles/Map.css'
 
 const Map = (props) => {
 	const map = useRef(null);
@@ -246,16 +247,14 @@ const Map = (props) => {
 	}, [props.currentRoute]);
 
 	return (
-		<div id="map-container">
+		<div
+			id="mapid"
+			ref={map}
+		>
 			<SearchBar
 				updateMap={focusOnMarker}
 				queryInformation={queryInformation}
-			/>
-			<div
-				id="mapid"
-				ref={map}
-				style={{ height: '400px', width: '600px' }}
-			></div>
+			/>	
 		</div>
 	);
 };

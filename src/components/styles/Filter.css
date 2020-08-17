@@ -17,7 +17,7 @@
 #filter-button:hover,
 #filter-button.selected {
 	background: url('https://wildoceanwhale.org/SightingApps/resources/icons/filter_icon.png'),
-		#002470;
+		#007006;
 	background-size: 55%;
 	background-repeat: no-repeat;
 	background-position: center;
@@ -28,7 +28,7 @@
 }
 
 #filter-drop-down {
-	position: absolute;
+    position: absolute;
 	right: 0px;
 	top: 82px;
 	width: 150px;
@@ -36,7 +36,8 @@
 	padding: 15px 10px;
 	text-align: left;
 	font-size: 13px;
-	font-weight: 500;
+    font-weight: 500;
+    background-color: white;
 }
 
 #filter-drop-down li {

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import './styles/LanesBox.css';
 
 const LanesBox = (props) => {
 	const [visibleStops, setVisibleStops] = useState([]);
