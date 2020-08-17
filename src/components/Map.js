@@ -186,6 +186,9 @@ const Map = (props) => {
 
 		const addDefaultConfiguration = () => {
 			L.control.layers(baseMaps, overlayMaps).addTo(map.current);
+			if (routingControl.current !== null && routingControl.current !== undefined) {
+				routingControl.current.removeFrom(map.current);
+			}
 		};
 
 		if (map.current._container === undefined) {
