@@ -1,0 +1,48 @@
+#filter-button {
+	background: url('https://wildoceanwhale.org/SightingApps/resources/icons/filter_icon.png');
+	background-size: 55%;
+	background-repeat: no-repeat;
+	background-position: center;
+	border: none;
+	height: 100%;
+	width: auto;
+	vertical-align: center;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	padding: 30px;
+	padding-right: 40px;
+}
+
+#filter-button:hover,
+#filter-button.selected {
+	background: url('https://wildoceanwhale.org/SightingApps/resources/icons/filter_icon.png'),
+		#002470;
+	background-size: 55%;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+.hidden {
+	display: none;
+}
+
+#filter-drop-down {
+	position: absolute;
+	right: 0px;
+	top: 82px;
+	width: 150px;
+	box-shadow: -5px 5px 15px rgb(192, 192, 192);
+	padding: 15px 10px;
+	text-align: left;
+	font-size: 13px;
+	font-weight: 500;
+}
+
+#filter-drop-down li {
+	margin-bottom: 5px;
+}
+
+#filter-drop-down label {
+	margin-left: 5px;
+}

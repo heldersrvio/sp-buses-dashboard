@@ -5,6 +5,7 @@ import Footer from './components/Footer';
 import LanesBox from './components/LanesBox';
 import LinesBox from './components/LinesBox';
 import Map from './components/Map';
+import './styles/App.css';
 
 const App = () => {
 	const [vehicles, setVehicles] = useState([]);
@@ -109,9 +110,7 @@ const App = () => {
 
 	return (
 		<div className="App">
-			<div id="header-container">
-				<Header updateDashboard={setDashboardOptions} />
-			</div>
+			<Header updateDashboard={setDashboardOptions} />
 			<div id="dashboard">
 				<div id="left-section">
 					{dashboardOptions.showLines ? (

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
+import './styles/Filter.css';
 
 const Filter = (props) => {
 	const [showMap, setShowMap] = useState(true);
@@ -34,10 +35,10 @@ const Filter = (props) => {
 	};
 
 	return (
-		<div id="filter">
+		<div id="filter" ref={filterRef}>
 			<button
 				id="filter-button"
-				ref={filterRef}
+				className={buttonClicked ? 'selected' : ''}
 				onClick={() => setButtonClicked(!buttonClicked)}
 			></button>
 			<ul
@@ -45,46 +46,46 @@ const Filter = (props) => {
 				className={buttonClicked ? 'visible' : 'hidden'}
 			>
 				<li className={'filter-option'}>
-					<label
-						htmlFor="filter-lines"
-						className={showLines ? 'active' : 'inactive'}
-					>
-						Exibir linhas
-					</label>
 					<input
 						id="filter-lines"
 						type="checkbox"
 						checked={showLines}
 						onChange={() => toggleFilter(showLines, setShowLines)}
 					></input>
+					<label
+						htmlFor="filter-lines"
+						className={showLines ? 'active' : 'inactive'}
+					>
+						Exibir linhas
+					</label>
 				</li>
 				<li className={'filter-option'}>
-					<label
-						htmlFor="filter-lanes"
-						className={showLanes ? 'active' : 'inactive'}
-					>
-						Exibir corredores
-					</label>
 					<input
 						id="filter-lanes"
 						type="checkbox"
 						checked={showLanes}
 						onChange={() => toggleFilter(showLanes, setShowLanes)}
 					></input>
+					<label
+						htmlFor="filter-lanes"
+						className={showLanes ? 'active' : 'inactive'}
+					>
+						Exibir corredores
+					</label>
 				</li>
 				<li className={'filter-option'}>
-					<label
-						htmlFor="filter-map"
-						className={showMap ? 'active' : 'inactive'}
-					>
-						Exibir mapa
-					</label>
 					<input
 						id="filter-map"
 						type="checkbox"
 						checked={showMap}
 						onChange={() => toggleFilter(showMap, setShowMap)}
 					></input>
+					<label
+						htmlFor="filter-map"
+						className={showMap ? 'active' : 'inactive'}
+					>
+						Exibir mapa
+					</label>
 				</li>
 			</ul>
 		</div>

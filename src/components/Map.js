@@ -186,14 +186,18 @@ const Map = (props) => {
 
 		const addDefaultConfiguration = () => {
 			L.control.layers(baseMaps, overlayMaps).addTo(map.current);
-			if (routingControl.current !== null && routingControl.current !== undefined) {
+			if (
+				routingControl.current !== null &&
+				routingControl.current !== undefined
+			) {
 				routingControl.current.removeFrom(map.current);
 			}
 		};
 
 		if (map.current._container === undefined) {
 			map.current = L.map('mapid', {
-				layers: [terrainTileLayer, vehicleMarkers, stopMarkers],
+				//layers: [terrainTileLayer, vehicleMarkers, stopMarkers],
+				layers: [terrainTileLayer, stopMarkers],
 			}).setView([-23.542271, -46.636823], 15);
 			addDefaultConfiguration();
 		} else {
@@ -201,7 +205,8 @@ const Map = (props) => {
 			const zoom = map.current.getZoom();
 			map.current.remove();
 			map.current = L.map('mapid', {
-				layers: [terrainTileLayer, vehicleMarkers, stopMarkers],
+				//layers: [terrainTileLayer, vehicleMarkers, stopMarkers],
+				layers: [terrainTileLayer, stopMarkers],
 			}).setView(center, zoom);
 			addDefaultConfiguration();
 		}
