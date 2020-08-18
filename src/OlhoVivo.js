@@ -1,131 +1,122 @@
 const OlhoVivo = () => {
 	const baseURL = process.env.REACT_APP_BASE_URL2;
 
-	const authenticate = (async () => {
-		try {
-			const response = await fetch(
-				baseURL +
-					`Login/Autenticar?token=${process.env.REACT_APP_SPTRANS_API_KEY}`,
-				{
-					method: 'POST',
-					mode: 'cors',
-				}
-			);
-			const responseData = await response.json();
-			console.log(responseData);
-			return responseData;
-		} catch (error) {
-			console.log('Problem authenticating');
-			return false;
+	(async () => {
+		const response = await fetch(
+			baseURL +
+				`Login/Autenticar?token=${process.env.REACT_APP_SPTRANS_API_KEY}`,
+			{
+				method: 'POST',
+				mode: 'cors',
+			}
+		);
+		const responseData = await response.json();
+		console.log(responseData);
+		if (responseData === true) {
+			return true;
 		}
+		return false;
 	})();
 
 	const fetchVehiclesInformation = async (setVehicles, finishLoading) => {
-		try {
-			const response = await fetch(baseURL + 'Posicao', {
-				method: 'GET',
-				mode: 'cors',
-			});
-			const responseData = await response.json();
-			if (responseData === null) {
-				return;
-			}
-			let currentVehicles = [];
-			setTimeout(() => {
-				responseData.l.forEach((line) => {
-					line.vs.forEach((vehicle) => {
-						currentVehicles.push({
-							prefix: vehicle.p,
-							accessibility: vehicle.a,
-							latitude: vehicle.py,
-							longitude: vehicle.px,
-							lineCode: line.cl,
-						});
+		const response = await fetch(baseURL + 'Posicao', {
+			method: 'GET',
+			mode: 'cors',
+		});
+		const responseData = await response.json();
+		if (response.status !== 200 || responseData === null) {
+			throw new Error('Error');
+		}
+		let currentVehicles = [];
+		setTimeout(() => {
+			responseData.l.forEach((line) => {
+				line.vs.forEach((vehicle) => {
+					currentVehicles.push({
+						prefix: vehicle.p,
+						accessibility: vehicle.a,
+						latitude: vehicle.py,
+						longitude: vehicle.px,
+						lineCode: line.cl,
 					});
 				});
-				setVehicles(currentVehicles);
-				finishLoading();
-			}, 50);
-		} catch (error) {
-			console.log('Problem fetching vehicles information');
-		}
+			});
+			setVehicles(currentVehicles);
+			finishLoading();
+		}, 50);
 	};
 
 	const fetchStopsInformation = async (setStops) => {
-		try {
-			const response = await fetch(baseURL + 'Parada/Buscar?termosBusca=', {
-				method: 'GET',
-				mode: 'cors',
-			});
-			const responseData = await response.json();
-			let currentStops = [];
-			setTimeout(() => {
-				responseData.forEach((stop) => {
-					currentStops.push({
-						stopCode: stop.cp,
-						stopName: stop.np,
-						stopAddress: stop.ed,
-						latitude: stop.py,
-						longitude: stop.px,
-					});
-				});
-				setStops(currentStops);
-			}, 50);
-		} catch (error) {
-			console.log('Problem fetching stops information');
+		const response = await fetch(baseURL + 'Parada/Buscar?termosBusca=', {
+			method: 'GET',
+			mode: 'cors',
+		});
+		const responseData = await response.json();
+		if (response.status !== 200 || responseData === null) {
+			throw new Error('Error');
 		}
+		let currentStops = [];
+		setTimeout(() => {
+			responseData.forEach((stop) => {
+				currentStops.push({
+					stopCode: stop.cp,
+					stopName: stop.np,
+					stopAddress: stop.ed,
+					latitude: stop.py,
+					longitude: stop.px,
+				});
+			});
+			setStops(currentStops);
+		}, 50);
 	};
 
 	const fetchLinesInformation = async (queryTerm, setLines) => {
-		try {
-			const response = await fetch(
-				baseURL + `Linha/Buscar?termosBusca=${queryTerm}`,
-				{
-					method: 'GET',
-					mode: 'cors',
-				}
-			);
-			const responseData = await response.json();
-			let currentLines = [];
-			setTimeout(() => {
-				responseData.forEach((line) => {
-					currentLines.push({
-						lineCode: line.cl,
-						circular: line.lc,
-						lineNumericalSignOne: line.lt,
-						lineNumericalSignTwo: line.tl,
-						lineOrientation: line.sl,
-						lineSignPrimary: line.tp,
-						lineSignSecondary: line.ts,
-					});
-				});
-				setLines(currentLines);
-			}, 50);
-		} catch (error) {
-			console.log('Problem fetching lines information');
+		const response = await fetch(
+			baseURL + `Linha/Buscar?termosBusca=${queryTerm}`,
+			{
+				method: 'GET',
+				mode: 'cors',
+			}
+		);
+		const responseData = await response.json();
+		if (response.status !== 200 || responseData === null) {
+			throw new Error('Error');
 		}
+		let currentLines = [];
+		setTimeout(() => {
+			responseData.forEach((line) => {
+				currentLines.push({
+					lineCode: line.cl,
+					circular: line.lc,
+					lineNumericalSignOne: line.lt,
+					lineNumericalSignTwo: line.tl,
+					lineOrientation: line.sl,
+					lineSignPrimary: line.tp,
+					lineSignSecondary: line.ts,
+				});
+			});
+			setLines(currentLines);
+		}, 50);
 	};
 
 	const fetchLanesInformation = async (setLanes) => {
-		try {
-			const response = await fetch(baseURL + 'Corredor', {
-				method: 'GET',
-				mode: 'cors',
-			});
-			const responseData = await response.json();
-			let currentLanes = [];
-			setTimeout(() => {
-				responseData.forEach((lane) => {
-					currentLanes.push({
-						laneCode: lane.cc,
-						laneName: lane.nc,
-					});
-				});
-				setLanes(currentLanes);
-			}, 50);
-		} catch (error) {
-			console.log('Problem fetching lanes information');
+		const response = await fetch(baseURL + 'Corredor', {
+			method: 'GET',
+			mode: 'cors',
+		});
+		const responseData = await response.json();
+		if (response.status !== 200 || responseData === null) {
+			throw new Error('Error');
 		}
+		let currentLanes = [];
+		setTimeout(() => {
+			responseData.forEach((lane) => {
+				currentLanes.push({
+					laneCode: lane.cc,
+					laneName: lane.nc,
+				});
+			});
+			setLanes(currentLanes);
+		}, 50);
 	};
 
 	const fetchStopsForLane = async (laneCode, setStopsForLane) => {
@@ -137,6 +128,9 @@ const OlhoVivo = () => {
 			}
 		);
 		const responseData = await response.json();
+		if (response.status !== 200 || responseData === null) {
+			throw new Error('Error');
+		}
 		let currentStops = [];
 		responseData.forEach((stop) => {
 			currentStops.push({
@@ -156,6 +150,9 @@ const OlhoVivo = () => {
 			}
 		);
 		const responseData = await response.json();
+		if (response.status !== 200 || responseData === null) {
+			throw new Error('Error');
+		}
 		let currentEstimations = [];
 		const stopCoordinates = [responseData.p.py, responseData.p.px];
 		responseData.p.l.forEach((line) => {
@@ -172,7 +169,6 @@ const OlhoVivo = () => {
 	};
 
 	return {
-		authenticate,
 		fetchVehiclesInformation,
 		fetchStopsInformation,
 		fetchLanesInformation,

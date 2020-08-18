@@ -20,6 +20,7 @@ const App = () => {
 		showLanes: true,
 		showMap: true,
 	});
+	const [error, setError] = useState(false);
 
 	const olhoVivo = useRef(null);
 
@@ -88,12 +89,23 @@ const App = () => {
 			setCurrentTime(new Date());
 		};
 
-		const update = () => {
-			if (olhoVivo.current.authenticate) {
-				setLoading(true);
-				olhoVivo.current.fetchVehiclesInformation(setVehicles, finishUpdate);
-				olhoVivo.current.fetchStopsInformation(setStops);
-				olhoVivo.current.fetchLanesInformation(setLanes);
+		const update = async () => {
+			for (let i = 0; i < 5; i++) {
+				try {
+					setLoading(true);
+					await olhoVivo.current.fetchStopsInformation(setStops);
+					await olhoVivo.current.fetchLanesInformation(setLanes);
+					await olhoVivo.current.fetchVehiclesInformation(
+						setVehicles,
+						finishUpdate
+					);
+					break;
+				} catch (error) {
+					if (i === 4) {
+						setLoading(false);
+						setError(true);
+					}
+				}
 			}
 		};
 
@@ -147,7 +159,11 @@ const App = () => {
 					</div>
 				) : null}
 			</div>
-			<Footer loading={loading} lastUpdateTime={stringifyUpdateInterval()} />
+			<Footer
+				loading={loading}
+				error={error}
+				lastUpdateTime={stringifyUpdateInterval()}
+			/>
 		</div>
 	);
 };

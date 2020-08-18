@@ -28,6 +28,10 @@
 	display: block;
 }
 
+#error-message {
+	color: rgb(214, 0, 0);
+}
+
 #footer-links a {
 	display: block;
 }

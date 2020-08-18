@@ -16,6 +16,8 @@ const Footer = (props) => {
 		<div id="footer">
 			{props.loading ? (
 				loadingSpinner
+			) : props.error ? (
+				<span id="error-message">Erro. Não foi possível obter os dados.</span>
 			) : (
 				<span>Última atualização: {props.lastUpdateTime}</span>
 			)}
@@ -40,6 +42,7 @@ const Footer = (props) => {
 
 Footer.propTypes = {
 	loading: PropTypes.bool,
+	error: PropTypes.bool,
 	lastUpdateTime: PropTypes.string,
 };
 
