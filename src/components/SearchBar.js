@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import './styles/SearchBar.css';
 
 const SearchBar = (props) => {
 	const [currentInput, setCurrentInput] = useState('');
 	const [lookUpInfo, setLookUpInfo] = useState([]);
+	const input = useRef(null);
 
 	const lookUp = (term) => {
 		const result = props.queryInformation(term);
@@ -57,6 +58,8 @@ const SearchBar = (props) => {
 					id="search-bar-input"
 					placeholder="Procurar ônibus e paradas"
 					value={currentInput}
+					ref={input}
+					onClick={() => input.current.focus()}
 					onChange={(e) => {
 						setCurrentInput(e.target.value);
 						lookUp(e.target.value);

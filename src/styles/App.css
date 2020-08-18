@@ -38,3 +38,34 @@ body,
 	height: 100%;
 	flex: 2 2 0px;
 }
+
+@media only screen and (max-width: 650px) {
+	#dashboard {
+		display: flex;
+		flex-direction: column;
+		width: 90%;
+		height: 100%;
+		z-index: 10;
+		position: relative;
+		padding: 0% 5%;
+		background-color: rgb(255, 196, 0);
+	}
+
+	#dashboard #left-section {
+		display: flex;
+		flex-direction: column;
+		flex: 1 1 0px;
+		justify-content: space-between;
+		margin-bottom: 2px;
+	}
+
+	#dashboard #right-section {
+		display: flex;
+		flex-direction: column;
+		flex: 0.7 0.7 0px;
+	}
+
+	.App {
+		height: 150%;
+	}
+}

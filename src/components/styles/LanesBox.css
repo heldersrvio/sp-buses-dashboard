@@ -8,6 +8,7 @@
 #lanes-box-container h2 {
 	text-align: center;
 	text-transform: uppercase;
+	height: 21px;
 	font-size: 21px;
 	color: rgb(255, 0, 0);
 	margin-top: 7px;
@@ -24,7 +25,7 @@
 
 #lanes-ul {
 	overflow: scroll;
-	height: 86.6%;
+	height: calc(100% - 34px);
 }
 
 .lane-stops-ul {

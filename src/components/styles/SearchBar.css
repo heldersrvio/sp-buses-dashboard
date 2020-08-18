@@ -55,3 +55,16 @@
 	padding: 10px;
 	font-weight: lighter;
 }
+
+@media only screen and (max-width: 650px) {
+	#search-bar {
+		width: 60%;
+		left: 20%;
+	}
+
+	#top-section input {
+		width: 97%;
+		height: 25px;
+		font-size: 16px;
+	}
+}
