@@ -1,4 +1,59 @@
 #lines-box-container {
-    flex: 1 1 0px;
-    overflow: scroll;
+	flex: 1 1 0px;
+	background-color: rgb(255, 255, 189);
+	border-bottom: 1pt solid rgb(255, 196, 0);
+	overflow: hidden;
+}
+
+#lines-box-top h2 {
+	text-align: center;
+	text-transform: uppercase;
+	font-size: 21px;
+	color: rgb(0, 132, 255);
+	margin: 7px 0px;
+}
+
+#lines-box-top {
+	border-bottom: 1pt dashed rgb(0, 132, 255);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding-bottom: 5px;
+	position: sticky;
+	position: -webkit-sticky;
+	top: 0px;
+	background-color: rgb(255, 255, 189);
+}
+
+#lines-box-top input {
+	background-color: rgba(255, 255, 255, 0.5);
+}
+
+.lines-box-result {
+	border-bottom: 1pt dashed rgb(255, 196, 0);
+	padding: 7px;
+	font-size: 14px;
+	overflow: scroll;
+}
+
+#lines-box-results {
+	overflow: scroll;
+	height: 77.6%;
+}
+
+.lines-box-result-terminal {
+	cursor: pointer;
+}
+
+.lines-box-result-details {
+	padding: 5px;
+	font-size: 12px;
+}
+
+li {
+	padding: 3px;
+}
+
+li b {
+	font-weight: bold;
 }

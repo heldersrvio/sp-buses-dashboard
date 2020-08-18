@@ -1,37 +1,36 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import './styles/SearchBar.css'
+import './styles/SearchBar.css';
 
 const SearchBar = (props) => {
 	const [currentInput, setCurrentInput] = useState('');
 	const [lookUpInfo, setLookUpInfo] = useState([]);
-	const [loading, setLoading] = useState(false);
 
 	const lookUp = (term) => {
-		setLoading(true);
 		const result = props.queryInformation(term);
 		setLookUpInfo(result);
-		setLoading(false);
 	};
-
-	const loadingSpinner = (
-		<div className="loading-spinner">
-			<div></div>
-			<div></div>
-			<div></div>
-			<div></div>
-		</div>
-	);
 
 	const searchResultsCards = lookUpInfo.map((result) => {
 		return (
 			<div
 				className="search-result-card"
 				key={`search-result-card-${result.title}`}
-				onClick={() => props.updateMap(result.title)}
+				onClick={() => {
+					setCurrentInput('');
+					props.updateMap(result.title);
+				}}
 			>
 				<div className="search-results-card-left-section">
-					<img className="search-result-icon" src={result.type === 'ônibus' ? 'https://image.flaticon.com/icons/png/512/171/171255.png' : 'http://icons.iconarchive.com/icons/google/noto-emoji-travel-places/1024/42561-bus-stop-icon.png'} alt="Vehicle" />
+					<img
+						className="search-result-icon"
+						src={
+							result.type === 'ônibus'
+								? 'https://image.flaticon.com/icons/png/512/171/171255.png'
+								: 'http://icons.iconarchive.com/icons/google/noto-emoji-travel-places/1024/42561-bus-stop-icon.png'
+						}
+						alt="Vehicle"
+					/>
 				</div>
 				<div className="search-results-card-right-section">
 					<span className="search-result-title">
@@ -68,7 +67,7 @@ const SearchBar = (props) => {
 				id="search-results"
 				className={currentInput !== '' ? 'visible' : 'hidden'}
 			>
-				{loading ? loadingSpinner : searchResults}
+				{searchResults}
 			</div>
 		</div>
 	);

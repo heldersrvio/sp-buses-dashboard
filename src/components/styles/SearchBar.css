@@ -1,57 +1,57 @@
 #search-bar {
-    z-index: 1000;
-    width: 40%;
-    position: relative;
-    top: 5px;
-    left: 35%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+	z-index: 1000;
+	width: 40%;
+	position: relative;
+	top: 5px;
+	left: 30%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 
 #top-section {
-    width: 100%;
+	width: 100%;
 }
 
 #top-section input {
-    width: 97%;
-    height: 23px;
-    border-radius: 15px;
-    border: 1pt solid grey;
-    padding-left: 3%;
+	width: 97%;
+	height: 23px;
+	border-radius: 15px;
+	border: 1pt solid grey;
+	padding-left: 3%;
 }
 
 #search-results {
-    background-color: white;
-    width: 95%;
-    font-weight: bold;
+	background-color: white;
+	width: 95%;
+	font-weight: bold;
 }
 
 .search-result-card {
-    display: flex;
-    flex-direction: row;
-    cursor: pointer;
-    padding: 5px;
-    align-items: center;
+	display: flex;
+	flex-direction: row;
+	cursor: pointer;
+	padding: 5px;
+	align-items: center;
 }
 
 .search-result-card:hover {
-    background-color: darkgray;
+	background-color: darkgray;
 }
 
 .search-results-card-left-section img {
-    width: 30px;
-    height: auto;
-    margin-right: 10px;
+	width: 30px;
+	height: auto;
+	margin-right: 10px;
 }
 
 .search-results-card-right-section {
-    display: flex;
-    flex-direction: column;
+	display: flex;
+	flex-direction: column;
 }
 
 #no-results-message {
-    display: block;
-    padding: 10px;
-    font-weight: lighter;
+	display: block;
+	padding: 10px;
+	font-weight: lighter;
 }

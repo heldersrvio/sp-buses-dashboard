@@ -112,40 +112,40 @@ const App = () => {
 		<div className="App">
 			<Header updateDashboard={setDashboardOptions} />
 			<div id="dashboard">
-				<div id="left-section">
-					{dashboardOptions.showLines ? (
-						<LinesBox
-							fetchLinesInformation={
-								olhoVivo.current !== null
-									? olhoVivo.current.fetchLinesInformation
-									: () => {}
-							}
-						/>
-					) : null}
-					{dashboardOptions.showLanes ? (
-						<LanesBox
-							updateMap={() => {}}
-							lanes={lanes}
-							fetchStopsForLane={
-								olhoVivo.current !== null
-									? olhoVivo.current.fetchStopsForLane
-									: () => {}
-							}
-						/>
-					) : null}
-				</div>
-					{dashboardOptions.showMap ? (
-						<div id="right-section">
-							<Map
-								vehicles={vehicles}
-								stops={stops}
-								currentRoute={currentRoute}
-								loadEstimatedTimes={loadEstimatedTimes}
+				{dashboardOptions.showLines || dashboardOptions.showLanes ? (
+					<div id="left-section">
+						{dashboardOptions.showLines ? (
+							<LinesBox
+								fetchLinesInformation={
+									olhoVivo.current !== null
+										? olhoVivo.current.fetchLinesInformation
+										: () => {}
+								}
 							/>
-						</div>
-					) : (
-						null
-					)}
+						) : null}
+						{dashboardOptions.showLanes ? (
+							<LanesBox
+								updateMap={() => {}}
+								lanes={lanes}
+								fetchStopsForLane={
+									olhoVivo.current !== null
+										? olhoVivo.current.fetchStopsForLane
+										: () => {}
+								}
+							/>
+						) : null}
+					</div>
+				) : null}
+				{dashboardOptions.showMap ? (
+					<div id="right-section">
+						<Map
+							vehicles={vehicles}
+							stops={stops}
+							currentRoute={currentRoute}
+							loadEstimatedTimes={loadEstimatedTimes}
+						/>
+					</div>
+				) : null}
 			</div>
 			<Footer loading={loading} lastUpdateTime={stringifyUpdateInterval()} />
 		</div>

@@ -1,4 +1,52 @@
 #lanes-box-container {
-    flex: 1 1 0px;
-    overflow: scroll;
+	flex: 1 1 0px;
+	background-color: rgb(255, 255, 189);
+	border-top: 1pt solid rgb(255, 196, 0);
+	overflow: hidden;
+}
+
+#lanes-box-container h2 {
+	text-align: center;
+	text-transform: uppercase;
+	font-size: 21px;
+	color: rgb(255, 0, 0);
+	margin-top: 7px;
+	padding-bottom: 5px;
+	border-bottom: 1pt dashed rgb(255, 0, 0);
+}
+
+.lanes-box-result {
+	border-bottom: 1pt dashed rgb(255, 196, 0);
+	padding: 7px;
+	font-size: 14px;
+	overflow: scroll;
+}
+
+#lanes-ul {
+	overflow: scroll;
+	height: 86.6%;
+}
+
+.lane-stops-ul {
+	display: none;
+	padding: 5px;
+	font-size: 12px;
+}
+
+.lane-stops-ul.visible {
+	display: block;
+}
+
+.lane-li {
+	font-size: 14px;
+	padding: 7px;
+	border-bottom: 1pt dashed rgb(255, 196, 0);
+}
+
+.show-stops {
+	border: none;
+	font-size: 14px;
+	background-color: transparent;
+	color: rgb(0, 0, 187);
+	text-decoration: underline;
 }

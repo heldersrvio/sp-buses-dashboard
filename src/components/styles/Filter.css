@@ -28,7 +28,7 @@
 }
 
 #filter-drop-down {
-    position: absolute;
+	position: absolute;
 	right: 0px;
 	top: 82px;
 	width: 150px;
@@ -36,8 +36,8 @@
 	padding: 15px 10px;
 	text-align: left;
 	font-size: 13px;
-    font-weight: 500;
-    background-color: white;
+	font-weight: 500;
+	background-color: white;
 }
 
 #filter-drop-down li {

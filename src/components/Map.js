@@ -3,7 +3,7 @@ import SearchBar from './SearchBar';
 import PropTypes from 'prop-types';
 import L from 'leaflet';
 import 'leaflet-routing-machine';
-import './styles/Map.css'
+import './styles/Map.css';
 
 const Map = (props) => {
 	const map = useRef(null);
@@ -32,14 +32,30 @@ const Map = (props) => {
 				});
 				return;
 			}
+			console.log(code);
 			const vehiclesWithCode = props.vehicles.filter(
-				(vehicle) => vehicle.vehicleCode === code
+				(vehicle) => vehicle.prefix === code
 			);
 			if (vehiclesWithCode.length > 0) {
 				map.current.setView(
 					[vehiclesWithCode[0].latitude, vehiclesWithCode[0].longitude],
 					17
 				);
+				map.current.eachLayer((layer) => {
+					if (
+						layer.getLatLng !== undefined &&
+						layer
+							.getLatLng()
+							.equals([
+								vehiclesWithCode[0].latitude,
+								vehiclesWithCode[0].longitude,
+							])
+					) {
+						layer.openPopup();
+						return;
+					}
+				});
+				return;
 			}
 		}
 		return;
@@ -134,6 +150,8 @@ const Map = (props) => {
 			iconUrl:
 				'http://icons.iconarchive.com/icons/google/noto-emoji-travel-places/1024/42561-bus-stop-icon.png',
 			iconSize: [38, 38],
+			iconAnchor: [10, 19],
+			popupAnchor: [9, -19],
 		});
 
 		const vehicleMarkers = L.layerGroup(
@@ -197,8 +215,7 @@ const Map = (props) => {
 
 		if (map.current._container === undefined) {
 			map.current = L.map('mapid', {
-				//layers: [terrainTileLayer, vehicleMarkers, stopMarkers],
-				layers: [terrainTileLayer, stopMarkers],
+				layers: [terrainTileLayer, vehicleMarkers, stopMarkers],
 			}).setView([-23.542271, -46.636823], 15);
 			addDefaultConfiguration();
 		} else {
@@ -206,8 +223,7 @@ const Map = (props) => {
 			const zoom = map.current.getZoom();
 			map.current.remove();
 			map.current = L.map('mapid', {
-				//layers: [terrainTileLayer, vehicleMarkers, stopMarkers],
-				layers: [terrainTileLayer, stopMarkers],
+				layers: [terrainTileLayer, vehicleMarkers, stopMarkers],
 			}).setView(center, zoom);
 			addDefaultConfiguration();
 		}
@@ -247,14 +263,11 @@ const Map = (props) => {
 	}, [props.currentRoute]);
 
 	return (
-		<div
-			id="mapid"
-			ref={map}
-		>
+		<div id="mapid" ref={map}>
 			<SearchBar
 				updateMap={focusOnMarker}
 				queryInformation={queryInformation}
-			/>	
+			/>
 		</div>
 	);
 };

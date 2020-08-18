@@ -32,15 +32,21 @@ const LinesBox = (props) => {
 							: 'lines-box-result-details hidden'
 					}
 				>
-					<li>Código: {line.lineCode}</li>
-					<li>{line.circular ? 'Circular' : 'Não circular'}</li>
 					<li>
-						Letreiro:{' '}
+						<b>Código:</b> {line.lineCode}
+					</li>
+					<li>
+						<b>{line.circular ? 'Circular' : 'Não circular'}</b>
+					</li>
+					<li>
+						<b>Letreiro:</b>{' '}
 						{line.lineNumericalSignOne + ' ' + line.lineNumericalSignTwo}
 					</li>
-					<li>{line.lineNumericalSignTwo === 10 ? 'Base' : 'Atendimento'}</li>
 					<li>
-						Sentido:{' '}
+						<b>{line.lineNumericalSignTwo === 10 ? 'Base' : 'Atendimento'}</b>
+					</li>
+					<li>
+						<b>Sentido:</b>{' '}
 						{line.lineOrientation === 1
 							? 'Terminal principal para secundário'
 							: 'Terminal secundário para principal'}
