@@ -45,11 +45,13 @@ const App = () => {
 	};
 
 	const loadEstimatedTimes = useCallback((stopCode) => {
-		if (olhoVivo.current.authenticate) {
+		try {
 			olhoVivo.current.fetchEstimatedArrivalTimes(
 				stopCode,
 				updateEstimatedTimes
 			);
+		} catch (error) {
+			setError(true);
 		}
 	}, []);
 

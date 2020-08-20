@@ -178,7 +178,7 @@ const Map = (props) => {
 					icon: stopIcon,
 				});
 				marker.bindPopup(
-					`<b>Parada ${stop.stopName}</b><br>Endereço: ${stop.stopAddress}<br><button id="button-${stop.stopCode}" class="show-estimated-time-button">Mostrar previsões de chegada</button><ul id="estimations-${stop.stopCode}"></ul>`
+					`<b>Parada ${stop.stopName}</b><br>Endereço: ${stop.stopAddress}<br><button id="button-${stop.stopCode}" class="show-estimated-time-button">Mostrar previsões de chegada</button><ul id="estimations-${stop.stopCode}" class="estimations-ul"></ul>`
 				);
 				marker.on('click', (e) => {
 					document
