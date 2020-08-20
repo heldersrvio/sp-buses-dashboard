@@ -12,13 +12,13 @@ O aplicativo foi escrito usando ReactJS e mostra informações sobre corredores 
 
 ![Interface da aplicação](https://i.imgur.com/mXcrNyS.png)
 
-A dashboard é composta de três seções: linhas, corredores e o mapa. No canto direito da barra do topo da página, encontra-se um filtro que reorganiza a dashboard por exibir apenas as seções que o usuário selecionar. Tanto o mapa, como as linhas e os corredores podem ser omitidos pelo filtro.
+A dashboard é composta de três seções: linhas, corredores e o mapa. No canto direito da barra do topo da página, encontra-se um filtro que reorganiza a dashboard por exibir apenas as seções que o usuário selecionar. Tanto o mapa como as linhas e os corredores podem ser omitidos pelo filtro.
 
 O rodapé da página informa ao usuário quando ocorreu a última atualização ou se houve algum erro durante o processo de coleta de dados.
 
 ### Linhas
 
-A seção de linhas é baseada em consultas: não é exibido nenhuma informação enquanto o usuário não digitar algo no campo de pesquisa. Quando o usuário pesquisa algum termo, os resultados são atualizados automaticamente com todas as linhas que se encaixam na pesquisa.
+A seção de linhas é baseada em consultas: não é exibida nenhuma informação enquanto o usuário não digitar algo no campo de pesquisa. Quando o usuário pesquisa algum termo, os resultados são atualizados automaticamente com todas as linhas que se encaixam na pesquisa.
 
 Cada linha possui uma seção de detalhes, que pode ser exibida ao se clicar em seu nome. Os detalhes contêm código, letreiro, sentido, além de informar se a linha é ou não circular e se é 'Base' ou 'Atendimento'.
 
@@ -36,53 +36,53 @@ Por último, o mapa também conta com uma barra de pesquisa. O usuário pode pes
 
 ## Organização do Projeto
 
-O projeto foi escrito, em sua maior parte, usando o framework ReactJS. O arquivo 'raiz' do projeto é index.js (localizado no diretório src), que tem a função de renderizar o componente React localizado em App.js, que se trata do componente principal.
+O projeto foi escrito, em sua maior parte, usando o framework ReactJS. O arquivo 'raiz' do projeto é index.js (localizado no diretório src), que tem a função de renderizar o componente React localizado em App.js, o qual se trata do componente principal.
 
 Além dos componentes React, as funções de autenticação e de comunicação por meio da API do Olho Vivo foram implementadas no arquivo OlhoVivo.js.
 
 ### Componentes
 
-Tirando o componente principal em App.js, o projeto conta com 7 componentes React: Filter, Header, Footer, LanesBox, LinesBox, SearchBar e Map, sendo que Filter é 'filho' de Header e SearchBar, de Map.
+Com exceção do componente principal em App.js, o projeto conta com 7 componentes React: Filter, Header, Footer, LanesBox, LinesBox, SearchBar e Map, sendo que Filter é 'filho' de Header e SearchBar, de Map.
 
 #### Filter
 
 Trata-se do filtro usado na barra do topo da aplicação. O filtro é responsável por selecionar o layout desejado da dashboard (mostrando ou omitindo alguma(s) das três seções). As opções foram implementadas por meio de estados React, que causam uma chamada da função 'updateDashboard' (passada como 'prop' pelo Header e responsável por atualizar o layout da dashboard) quando são alterados.
 
-### Header
+#### Header
 
-A barra do topo da aplicação, que exibe o título e o filtro. Recebe do component principal em App.js a função de atualização da dashboard, que é passada para Filter.
+A barra do topo da aplicação, que exibe o título e o filtro. Recebe do componente principal em App.js a função de atualização da dashboard, que é passada para Filter.
 
-### Footer
+#### Footer
 
 O rodapé da página, no qual se dispõem informações sobre a autoria, além de feedback a respeito da coleta de dados: um ícone animado que indica que os dados estão sendo carregados, uma mensagem que informa ao usuário há quanto tempo foi atualizada a aplicação (a atualização ocorre automaticamente a cada 5 minutos), ou uma mensagem de erro.
 
 O feedback provém dos 'props' que o componente recebe de App.js.
 
-### LanesBox
+#### LanesBox
 
 O componente responsável pela seção de corredores. Recebe de App.js uma lista de corredores, além de uma função assíncrona responsável por 'colher' todas as paradas de um determinado corredor.
 
 As paradas já carregadas e suas visibilidades são controladas por estados React.
 
-### LinesBox
+#### LinesBox
 
 O componente responsável pela seção de linhas. Recebe de App.js uma função assíncrona que pesquisa por linhas correspondentes ao que foi digitado pelo usuário no campo de busca.
 
 As linhas já carregadas e aquelas que foram clicadas (ou seja, estão exibindo seus detalhes) são controladas por estados React.
 
-### SearchBar
+#### SearchBar
 
 A barra de pesquisa do mapa. Recebe como 'props' uma função para atualizar o mapa (isto é, levar o usuário ao ponto em que se localiza o resultado em que ele clicou) e uma função de coleta de dados (que faz uma busca tanto de veículos como de paradas).
 
-### Map
+#### Map
 
 O mapa, renderizado com a ajuda da bibiloteca Leaflet, que dispõe as posições de todos os veículos e paradas.
 
-Como já mencionado, o mapa também possui a capacidade de calcular e exibir linhas de rotas entre ônibus e paradas. Para visualizar uma rota, o usuário deve clicar em 'Mostrar previsões de chegada' e, em seguida, em uma das opções de veículos exibidas.
+Como já mencionado, o mapa também possui a capacidade de calcular e exibir linhas de rotas entre ônibus e paradas. Para visualizar uma rota, o usuário deve clicar em 'Mostrar previsões de chegada' no popup de uma parada e, em seguida, em uma das opções de veículos exibidas.
 
 ## Testes
 
-Os testes (localizados no diretório tests dentro do diretório components) foram divididos por componente. Para testar usaram-se as dependências 'Enzyme' e 'Jest'. Foram feitas checagens de montagem sem erros, atualização de estado dos componentes, corretividade das informações exibidas e das classes HTML.
+Os testes (localizados no diretório tests dentro do diretório components) foram divididos por componente. Para testar utilizaram-se as dependências 'Enzyme' e 'Jest'. Foram feitas checagens de montagem sem erros,  de atualização de estado dos componentes, de corretividade das informações exibidas e de classes HTML.
 
 ## Estilos
 
