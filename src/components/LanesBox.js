@@ -48,11 +48,7 @@ const LanesBox = (props) => {
 				>
 					{stopsForLanes[lane.laneCode] !== undefined
 						? stopsForLanes[lane.laneCode].map((stop, index) => (
-								<li
-									key={'stop' + index + stop.stopCode}
-								>
-									{stop.stopName}
-								</li>
+								<li key={'stop' + index + stop.stopCode}>{stop.stopName}</li>
 						  ))
 						: null}
 				</ul>

@@ -74,7 +74,6 @@ As linhas já carregadas e aquelas que foram clicadas (ou seja, estão exibindo 
 
 A barra de pesquisa do mapa. Recebe como 'props' uma função para atualizar o mapa (isto é, levar o usuário ao ponto em que se localiza o resultado em que ele clicou) e uma função de coleta de dados (que faz uma busca tanto de veículos como de paradas).
 
-
 ### Map
 
 O mapa, renderizado com a ajuda da bibiloteca Leaflet, que dispõe as posições de todos os veículos e paradas.
@@ -90,4 +89,3 @@ Os testes (localizados no diretório tests dentro do diretório components) fora
 A estilização do aplicativo (em CSS) encontra-se nos dois diretórios styles (um dentro de src e o outro dentro de components). Fez-se amplo uso de 'flexbox', o que permitiu um layout flexível da dashboard, de acordo com o que o usuário selecionou no filtro.
 
 Usaram-se media queries para tornar a experiência de usuário agradável também em dispositivos menores. Nesse caso, a página segue uma única direção vertical, diferentemente da experiência de telas maiores, que dispõe o mapa e as outras duas seções em um espaço horizontal. Adicionaram-se, também, alguns pixels de acolchoamento nas bordas da dashboard, para que o usuário pudesse rolar a página e as seções individuais separadamente.
-
