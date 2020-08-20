@@ -50,7 +50,6 @@ const LanesBox = (props) => {
 						? stopsForLanes[lane.laneCode].map((stop, index) => (
 								<li
 									key={'stop' + index + stop.stopCode}
-									onClick={props.updateMap(stop.stopCode)}
 								>
 									{stop.stopName}
 								</li>
@@ -76,7 +75,6 @@ LanesBox.propTypes = {
 			laneName: PropTypes.string,
 		})
 	),
-	updateMap: PropTypes.func,
 	fetchStopsForLane: PropTypes.func,
 };
 

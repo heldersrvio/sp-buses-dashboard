@@ -137,7 +137,6 @@ const App = () => {
 						) : null}
 						{dashboardOptions.showLanes ? (
 							<LanesBox
-								updateMap={() => {}}
 								lanes={lanes}
 								fetchStopsForLane={
 									olhoVivo.current !== null
