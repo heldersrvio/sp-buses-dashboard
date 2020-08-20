@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "079e1803c0a195fbe0002acae15d971d",
+    "revision": "85fa674624173b31e50ebe469dbf759c",
     "url": "/sp-buses-dashboard/index.html"
   },
   {
-    "revision": "e8b5e45ea62ee89194e7",
+    "revision": "e5c899c35857a0644fa8",
     "url": "/sp-buses-dashboard/static/css/main.2357b1d1.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/sp-buses-dashboard/static/js/2.66e206d9.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "e8b5e45ea62ee89194e7",
-    "url": "/sp-buses-dashboard/static/js/main.e9e47194.chunk.js"
+    "revision": "e5c899c35857a0644fa8",
+    "url": "/sp-buses-dashboard/static/js/main.7ff3a9b9.chunk.js"
   },
   {
     "revision": "6effd198cfb8f5fec711",
