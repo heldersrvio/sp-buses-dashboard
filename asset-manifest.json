@@ -1,20 +1,20 @@
 {
   "files": {
-    "main.css": "/static/css/main.2357b1d1.chunk.css",
-    "main.js": "/static/js/main.9010e627.chunk.js",
-    "main.js.map": "/static/js/main.9010e627.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.ea22b445.js",
-    "runtime-main.js.map": "/static/js/runtime-main.ea22b445.js.map",
-    "static/js/2.66e206d9.chunk.js": "/static/js/2.66e206d9.chunk.js",
-    "static/js/2.66e206d9.chunk.js.map": "/static/js/2.66e206d9.chunk.js.map",
-    "index.html": "/index.html",
-    "precache-manifest.6b61c013f339fe5b77a4c7293a3b8e68.js": "/precache-manifest.6b61c013f339fe5b77a4c7293a3b8e68.js",
-    "service-worker.js": "/service-worker.js",
-    "static/css/main.2357b1d1.chunk.css.map": "/static/css/main.2357b1d1.chunk.css.map",
-    "static/js/2.66e206d9.chunk.js.LICENSE.txt": "/static/js/2.66e206d9.chunk.js.LICENSE.txt"
+    "main.css": "/sp-buses-dashboard/static/css/main.2357b1d1.chunk.css",
+    "main.js": "/sp-buses-dashboard/static/js/main.9010e627.chunk.js",
+    "main.js.map": "/sp-buses-dashboard/static/js/main.9010e627.chunk.js.map",
+    "runtime-main.js": "/sp-buses-dashboard/static/js/runtime-main.2af27787.js",
+    "runtime-main.js.map": "/sp-buses-dashboard/static/js/runtime-main.2af27787.js.map",
+    "static/js/2.66e206d9.chunk.js": "/sp-buses-dashboard/static/js/2.66e206d9.chunk.js",
+    "static/js/2.66e206d9.chunk.js.map": "/sp-buses-dashboard/static/js/2.66e206d9.chunk.js.map",
+    "index.html": "/sp-buses-dashboard/index.html",
+    "precache-manifest.eb62490355871535cd094b8c6f24677a.js": "/sp-buses-dashboard/precache-manifest.eb62490355871535cd094b8c6f24677a.js",
+    "service-worker.js": "/sp-buses-dashboard/service-worker.js",
+    "static/css/main.2357b1d1.chunk.css.map": "/sp-buses-dashboard/static/css/main.2357b1d1.chunk.css.map",
+    "static/js/2.66e206d9.chunk.js.LICENSE.txt": "/sp-buses-dashboard/static/js/2.66e206d9.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.ea22b445.js",
+    "static/js/runtime-main.2af27787.js",
     "static/js/2.66e206d9.chunk.js",
     "static/css/main.2357b1d1.chunk.css",
     "static/js/main.9010e627.chunk.js"
