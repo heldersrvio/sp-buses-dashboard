@@ -10,7 +10,7 @@ O aplicativo foi escrito usando ReactJS e mostra informações sobre corredores 
 
 ## Como Usar
 
-![Interface da aplicação](https://imgur.com/mXcrNyS)
+![Interface da aplicação](https://i.imgur.com/mXcrNyS.png)
 
 A dashboard é composta de três seções: linhas, corredores e o mapa. No canto direito da barra do topo da página, encontra-se um filtro que reorganiza a dashboard por exibir apenas as seções que o usuário selecionar. Tanto o mapa, como as linhas e os corredores podem ser omitidos pelo filtro.
 
