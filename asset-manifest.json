@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "/sp-buses-dashboard/static/css/main.2357b1d1.chunk.css",
-    "main.js": "/sp-buses-dashboard/static/js/main.82db0cdd.chunk.js",
-    "main.js.map": "/sp-buses-dashboard/static/js/main.82db0cdd.chunk.js.map",
+    "main.css": "/sp-buses-dashboard/static/css/main.74c3354f.chunk.css",
+    "main.js": "/sp-buses-dashboard/static/js/main.51ed49ef.chunk.js",
+    "main.js.map": "/sp-buses-dashboard/static/js/main.51ed49ef.chunk.js.map",
     "runtime-main.js": "/sp-buses-dashboard/static/js/runtime-main.2af27787.js",
     "runtime-main.js.map": "/sp-buses-dashboard/static/js/runtime-main.2af27787.js.map",
     "static/js/2.66e206d9.chunk.js": "/sp-buses-dashboard/static/js/2.66e206d9.chunk.js",
     "static/js/2.66e206d9.chunk.js.map": "/sp-buses-dashboard/static/js/2.66e206d9.chunk.js.map",
     "index.html": "/sp-buses-dashboard/index.html",
-    "precache-manifest.c50286204c4f3666c7ac9b7a5df07dba.js": "/sp-buses-dashboard/precache-manifest.c50286204c4f3666c7ac9b7a5df07dba.js",
+    "precache-manifest.d6c8fe307cd8274e42627ac0fbca37d3.js": "/sp-buses-dashboard/precache-manifest.d6c8fe307cd8274e42627ac0fbca37d3.js",
     "service-worker.js": "/sp-buses-dashboard/service-worker.js",
-    "static/css/main.2357b1d1.chunk.css.map": "/sp-buses-dashboard/static/css/main.2357b1d1.chunk.css.map",
+    "static/css/main.74c3354f.chunk.css.map": "/sp-buses-dashboard/static/css/main.74c3354f.chunk.css.map",
     "static/js/2.66e206d9.chunk.js.LICENSE.txt": "/sp-buses-dashboard/static/js/2.66e206d9.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.2af27787.js",
     "static/js/2.66e206d9.chunk.js",
-    "static/css/main.2357b1d1.chunk.css",
-    "static/js/main.82db0cdd.chunk.js"
+    "static/css/main.74c3354f.chunk.css",
+    "static/js/main.51ed49ef.chunk.js"
   ]
 }
