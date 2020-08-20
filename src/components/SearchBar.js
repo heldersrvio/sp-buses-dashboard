@@ -30,7 +30,7 @@ const SearchBar = (props) => {
 								? 'https://image.flaticon.com/icons/png/512/171/171255.png'
 								: 'http://icons.iconarchive.com/icons/google/noto-emoji-travel-places/1024/42561-bus-stop-icon.png'
 						}
-						alt="Vehicle"
+						alt={result.type === 'ônibus' ? 'Veículo' : 'Parada'}
 					/>
 				</div>
 				<div className="search-results-card-right-section">

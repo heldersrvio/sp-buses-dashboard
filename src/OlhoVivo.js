@@ -12,10 +12,6 @@ const OlhoVivo = () => {
 		);
 		const responseData = await response.json();
 		console.log(responseData);
-		if (responseData === true) {
-			return true;
-		}
-		return false;
 	})();
 
 	const fetchVehiclesInformation = async (setVehicles, finishLoading) => {
