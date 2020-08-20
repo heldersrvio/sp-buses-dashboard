@@ -215,7 +215,7 @@ const Map = (props) => {
 
 		if (map.current._container === undefined) {
 			map.current = L.map('mapid', {
-				layers: [terrainTileLayer, vehicleMarkers, stopMarkers],
+				layers: [standardTileLayer, vehicleMarkers, stopMarkers],
 			}).setView([-23.542271, -46.636823], 15);
 			addDefaultConfiguration();
 		} else {
@@ -223,7 +223,7 @@ const Map = (props) => {
 			const zoom = map.current.getZoom();
 			map.current.remove();
 			map.current = L.map('mapid', {
-				layers: [terrainTileLayer, vehicleMarkers, stopMarkers],
+				layers: [standardTileLayer, vehicleMarkers, stopMarkers],
 			}).setView(center, zoom);
 			addDefaultConfiguration();
 		}
